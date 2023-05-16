@@ -115,13 +115,9 @@
         - { regexp: '^PermitRootLogin', line: 'PermitRootLogin no' }
         - { regexp: '^AllowUsers', line: 'AllowUsers *@*' }
         - { regexp: '^AllowGroups', line: 'AllowGroups *@*' }
-      notify: Restart sshd service
+      notify: Restart sshd
 
-  handlers:
-    - name: Restart sshd service
-      service:
-        name: sshd
-        state: restarted
+
 #############
 
     - name: Set permissions and ownership on critical files
