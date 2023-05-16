@@ -45,6 +45,7 @@
         - { path: '/etc/group', state: 'file', mode: '0644', owner: 'root', group: 'root' }
         - { path: '/etc/gshadow', state: 'file', mode: '0600', owner: 'root', group: 'root' }
         - { path: '/etc/ssh/sshd_config', state: 'file', mode: '0600', owner: 'root', group: 'root' }
+      notify: Restart sshd service
 
           #    - name: Configure firewall rules
           # firewalld:
@@ -69,7 +70,7 @@
 ###############PAM########################################
 
 - name: Configure PAM Hardening for RHEL 9.1
-  hosts: all
+  hosts: localhost
   become: true
   tasks:
   
@@ -127,7 +128,7 @@
 ############################################users and group##########################################
 
 - name: Configure User and Group Settings Hardening for RHEL 9.1 SEC-5.4
-  hosts: all
+  hosts: localhost
   become: true
   tasks:
 
@@ -179,9 +180,10 @@
         - { regexp: '^PermitRootLogin', line: 'PermitRootLogin no' }
         - { regexp: '^AllowUsers', line: 'AllowUsers *@*' }
         - { regexp: '^AllowGroups', line: 'AllowGroups *@*' }
+      notify: Restart sshd service
 
   handlers:
-    - name: Restart SSH service for configuration changes to take effect
+    - name: Restart sshd service
       service:
         name: sshd
         state: restarted
