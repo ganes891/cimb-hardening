@@ -65,7 +65,7 @@
         state: restarted
 
 ###############PAM########################################
----
+
 - name: Configure PAM Hardening for RHEL 9.1
   hosts: all
   become: true
