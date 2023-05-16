@@ -1,6 +1,5 @@
----
 - name: CIS Hardening for RHEL 9.1
-  hosts: all
+  hosts: localhost
   become: true
   tasks:
 
@@ -45,17 +44,17 @@
         - { path: '/etc/gshadow', state: 'file', mode: '0600', owner: 'root', group: 'root' }
         - { path: '/etc/ssh/sshd_config', state: 'file', mode: '0600', owner: 'root', group: 'root' }
 
-    - name: Configure firewall rules
-      firewalld:
-        zone: public
-        permanent: true
-        state: enabled
-        immediate: true
-        service: "{{ item }}"
-      loop:
-        - ssh
-        - http
-        - https
+          #    - name: Configure firewall rules
+          # firewalld:
+          # zone: public
+          # permanent: true
+          # state: enabled
+          # immediate: true
+          # service: "{{ item }}"
+          # loop:
+          # - ssh
+          # - http
+          # - https
 
     # Add more tasks to perform additional hardening steps based on CIS benchmarks
 
@@ -65,7 +64,7 @@
         name: sshd
         state: restarted
 
-#########################################PAM#####################################################################
+###############PAM########################################
 ---
 - name: Configure PAM Hardening for RHEL 9.1
   hosts: all
@@ -125,7 +124,6 @@
 
 ############################################users and group##########################################
 
----
 - name: Configure User and Group Settings Hardening for RHEL 9.1 SEC-5.4
   hosts: all
   become: true
@@ -186,4 +184,4 @@
         name: sshd
         state: restarted
 
-#############################################################################################################
+#########################
