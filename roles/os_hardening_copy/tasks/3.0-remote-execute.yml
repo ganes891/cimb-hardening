@@ -1,0 +1,8 @@
+- name: Transfer and execute a script.
+  tasks:
+     - name: Transfer the script
+       copy: files/commands.sh dest=/home/root mode=0777
+
+     - name: Execute the script
+       command: sh /home/root/commands.sh
+  
