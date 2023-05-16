@@ -20,6 +20,7 @@
         - snmpd
         - cups
         - avahi-daemon
+        - firewalld
 
     - name: Enable and start required services
       service:
