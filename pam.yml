@@ -133,29 +133,18 @@
         group: "{{ item.group }}"
       loop:
         - { path: '/etc/passwd', state: 'file', mode: '0644', owner: 'root', group: 'root' }
-        - { path: '/etc/shadow', state: 'file', mode: '0600', owner: 'root', group: 'root' }
+        - { path: '/etc/shadow', state: 'file', mode: '0000', owner: 'root', group: 'root' }
         - { path: '/etc/group', state: 'file', mode: '0644', owner: 'root', group: 'root' }
-        - { path: '/etc/gshadow', state: 'file', mode: '0600', owner: 'root', group: 'root' }
+        - { path: '/etc/gshadow', state: 'file', mode: '0000', owner: 'root', group: 'root' }
         - { path: '/etc/ssh/sshd_config', state: 'file', mode: '0600', owner: 'root', group: 'root' }
       notify: Restart sshd service
 
-          #    - name: Configure firewall rules
-          # firewalld:
-          # zone: public
-          # permanent: true
-          # state: enabled
-          # immediate: true
-          # service: "{{ item }}"
-          # loop:
-          # - ssh
-          # - http
-          # - https
 
     # Add more tasks to perform additional hardening steps based on CIS benchmarks
 
-  handlers:
-    - name: Restart sshd service
-      service:
-        name: sshd
-        state: restarted
+    handlers:
+      - name: Restart sshd service
+        service:
+          name: sshd
+          state: restarted
 
