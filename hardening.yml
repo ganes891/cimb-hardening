@@ -1,4 +1,6 @@
 - hosts: all
+  become: true
+  ignore_errors: yes
   #vars_files:
     #- ./vars/const.yml
   roles:
