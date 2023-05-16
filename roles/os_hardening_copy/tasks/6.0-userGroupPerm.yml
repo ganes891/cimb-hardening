@@ -13,12 +13,8 @@
     - { path: '/etc/gshadow', state: 'file', mode: '0000', owner: 'root', group: 'root' }
     - { path: '/etc/ssh/sshd_config', state: 'file', mode: '0600', owner: 'root', group: 'root' }
   notify: Restart sshd service
-
-
-# Add more tasks to perform additional hardening steps based on CIS benchmarks
-
-handlers:
-  - name: Restart sshd service
-    service:
-      name: sshd
-      state: restarted
+  handlers:
+    - name: Restart sshd service
+      service:
+        name: sshd
+        state: restarted
