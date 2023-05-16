@@ -1,0 +1,11 @@
+---
+- name: Disable Unused Filesystems for RHEL 9.1
+  hosts: localhost
+  become: true
+  tasks:
+
+- name: Install modprobe to disable filesystems | os-10
+  package:
+    name: '{{ modprobe_package }}'
+    state: 'present'
+    
