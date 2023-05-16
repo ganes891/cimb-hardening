@@ -1,4 +1,4 @@
-- name: Set permissions and ownership on critical files
+- name: Set permissions and ownership on users, Groups, shadow - SEC 6.1 
   file:
     path: "{{ item.path }}"
     state: "{{ item.state }}"
