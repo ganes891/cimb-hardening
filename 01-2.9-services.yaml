@@ -27,7 +27,7 @@
         - rpcidmapd
         - ftpd
         - httpd
-        - 
+        - smbd
 
 
     - name: Remove unwanted rpm packages SEC-2.9.4 
