@@ -59,3 +59,66 @@
       loop:
         - sshd
         - crond
+############################################users and group##########################################
+
+- name: Configure User and Group Settings Hardening for RHEL 9.1 SEC-5.4
+  hosts: localhost
+  become: true
+  ignore_errors: yes
+  tasks:
+
+    - name: Set password expiration and warning SEC-5.4.1
+      lineinfile:
+        path: /etc/login.defs
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      loop:
+        - { regexp: '^PASS_MAX_DAYS', line: 'PASS_MAX_DAYS   30' }
+        - { regexp: '^PASS_WARN_AGE', line: 'PASS_WARN_AGE   14' }
+        - { regexp: '^PASS_MIN_DAYS', line: 'PASS_MIN_DAYS   7' }
+
+    - name: Set password history retention
+      lineinfile:
+        path: /etc/security/pwquality.conf
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      loop:
+        - { regexp: '^# remember', line: 'remember=5' }
+
+    - name: Set default umask for users
+      lineinfile:
+        path: /etc/profile
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      loop:
+        - { regexp: '^umask', line: 'umask 027' }
+
+    - name: Remove world-writable permissions on user home directories
+      file:
+        path: "{{ item }}"
+        mode: '0700'
+      with_fileglob:
+        - /home/*
+
+    - name: Ensure password hashing algorithm is SHA512
+      lineinfile:
+        path: /etc/login.defs
+        regexp: '^ENCRYPT_METHOD'
+        line: 'ENCRYPT_METHOD SHA512'
+
+    - name: Restrict root and system accounts from direct logins
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      loop:
+        - { regexp: '^PermitRootLogin', line: 'PermitRootLogin no' }
+        - { regexp: '^AllowUsers', line: 'AllowUsers *@*' }
+        - { regexp: '^AllowGroups', line: 'AllowGroups *@*' }
+      notify: Restart sshd service
+
+  handlers:
+    - name: Restart sshd service
+      service:
+        name: sshd
+        state: restarted
