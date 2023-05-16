@@ -1,6 +1,7 @@
 - name: CIS Hardening for RHEL 9.1
   hosts: localhost
   become: true
+  set_fact: flag="failed"
   tasks:
 
     - name: Disable unused services
