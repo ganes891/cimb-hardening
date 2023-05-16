@@ -1,0 +1,13 @@
+---
+
+
+- import_tasks: 2.0-services.yml
+  when: all_tasks_execute | bool
+
+- import_tasks: 2.2-softwareUpdates.yml
+  when: all_tasks_execute | bool
+
+- import_tasks: 5.0-access-auth.yml
+  when: all_tasks_execute | bool
+
+

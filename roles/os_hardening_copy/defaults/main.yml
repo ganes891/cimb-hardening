@@ -2,5 +2,11 @@
 os_security_packages_clean: true
 os_security_packages_list: ['xinetd', 'inetd', 'ypserv', 'telnet-server', 'rsh-server', 'prelink']
 
+# Set to false to turn the role into a no-op. Useful when using
+# the Ansible role dependency mechanism.
+os_hardening_enabled: true
+
+all_tasks_execute: true
+
 
 
