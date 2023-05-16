@@ -13,3 +13,9 @@
     - { path: '/etc/ssh/sshd_config', state: 'file', mode: '0600', owner: 'root', group: 'root' }
   notify: Restart sshd
 
+- name: Audit SUID executables - SEC-6.1.12 
+  shell: df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type f perm -4000 
+
+- name: Audit SGID executables   - SEC-6.1.13
+  shell: df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type f perm -2000 
+
