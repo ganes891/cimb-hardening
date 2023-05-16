@@ -2,7 +2,7 @@
 - name: Transfer the script
   copy: 
     src: files/commands.sh
-    dest: /home/root
+    dest: /var/tmp/script
 
 - name: Execute the script for RHB environment specific changes 
-  command: sh /home/root/commands.sh
+  command: sh /var/tmp/script/commands.sh
