@@ -11,9 +11,5 @@
       - { path: '/etc/group', state: 'file', mode: '0644', owner: 'root', group: 'root' }
       - { path: '/etc/gshadow', state: 'file', mode: '0000', owner: 'root', group: 'root' }
       - { path: '/etc/ssh/sshd_config', state: 'file', mode: '0600', owner: 'root', group: 'root' }
-    notify: Restart sshd
-handlers:
-  name: Restart sshd
-  service:
-    name: sshd
-    state: restarted
+   notify: Restart sshd
+
