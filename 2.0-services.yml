@@ -56,4 +56,3 @@
         - firewalld
         - chronyd
         - rsyslog
-        -                          #5.1.1
