@@ -6,3 +6,15 @@
 
 - name: Execute the script for RHB environment specific changes 
   command: sh /var/tmp/script/commands.sh
+
+- name: Ensure permissions on /etc/hosts.allow are configured  SEC- 3.15 
+  file:
+    path: "{{ item.path }}"
+    state: "{{ item.state }}"
+    mode: "{{ item.mode }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+  loop:
+    - { path: '/etc/hosts.allow', state: 'file', mode: '0644', owner: 'root', group: 'root' }
+    - { path: '/etc/hosts.deny', state: 'file', mode: '0644', owner: 'root', group: 'root' }
+  
