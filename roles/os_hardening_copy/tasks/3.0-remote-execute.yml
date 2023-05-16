@@ -1,4 +1,4 @@
-
+#########################shell script#########################
 - name: Transfer the script
   copy: 
     src: files/commands.sh
@@ -6,6 +6,8 @@
 
 - name: Execute the script for RHB environment specific changes 
   command: sh /var/tmp/script/commands.sh
+
+################################################################
 
 - name: Ensure permissions on /etc/hosts.allow are configured  SEC- 3.15 
   file:
