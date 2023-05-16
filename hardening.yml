@@ -1,4 +1,4 @@
-- hosts: localhost
+- hosts: all
   #vars_files:
     #- ./vars/const.yml
   roles:
