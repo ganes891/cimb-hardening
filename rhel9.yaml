@@ -1,0 +1,189 @@
+---
+- name: CIS Hardening for RHEL 9.1
+  hosts: all
+  become: true
+  tasks:
+
+    - name: Disable unused services
+      service:
+        name: "{{ item }}"
+        state: stopped
+        enabled: no
+      loop:
+        - telnet
+        - rsh
+        - rlogin
+        - rexec
+        - rstatd
+        - rsyslog
+        - dhcpd
+        - nfs
+        - snmpd
+        - cups
+        - avahi-daemon
+
+    - name: Enable and start required services
+      service:
+        name: "{{ item }}"
+        state: started
+        enabled: yes
+      loop:
+        - sshd
+        - firewalld
+
+    - name: Set permissions and ownership on critical files
+      file:
+        path: "{{ item.path }}"
+        state: "{{ item.state }}"
+        mode: "{{ item.mode }}"
+        owner: "{{ item.owner }}"
+        group: "{{ item.group }}"
+      loop:
+        - { path: '/etc/passwd', state: 'file', mode: '0644', owner: 'root', group: 'root' }
+        - { path: '/etc/shadow', state: 'file', mode: '0600', owner: 'root', group: 'root' }
+        - { path: '/etc/group', state: 'file', mode: '0644', owner: 'root', group: 'root' }
+        - { path: '/etc/gshadow', state: 'file', mode: '0600', owner: 'root', group: 'root' }
+        - { path: '/etc/ssh/sshd_config', state: 'file', mode: '0600', owner: 'root', group: 'root' }
+
+    - name: Configure firewall rules
+      firewalld:
+        zone: public
+        permanent: true
+        state: enabled
+        immediate: true
+        service: "{{ item }}"
+      loop:
+        - ssh
+        - http
+        - https
+
+    # Add more tasks to perform additional hardening steps based on CIS benchmarks
+
+  handlers:
+    - name: Restart sshd service
+      service:
+        name: sshd
+        state: restarted
+
+###############PAM########################################
+---
+- name: Configure PAM Hardening for RHEL 9.1
+  hosts: all
+  become: true
+  tasks:
+  
+    - name: Configure password complexity requirements
+      lineinfile:
+        path: /etc/pam.d/password-auth
+        line: "{{ item }}"
+      loop:
+        - "password    requisite     pam_pwquality.so try_first_pass retry=3"
+        - "password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_authtok remember=5"
+        - "password    required      pam_deny.so"
+
+    - name: Configure account lockout policy
+      lineinfile:
+        path: /etc/pam.d/password-auth
+        line: "auth        required      pam_faillock.so preauth silent audit deny=3 unlock_time=900"
+        insertafter: "auth        substack      password-auth-ac"
+      
+    - name: Configure session lock timeout
+      lineinfile:
+        path: /etc/pam.d/system-auth
+        line: "session     optional      pam_faillock.so"
+        insertafter: "session     required      pam_env.so"
+      
+    - name: Configure password history enforcement
+      lineinfile:
+        path: /etc/pam.d/password-auth
+        line: "password    required      pam_pwhistory.so remember=5"
+
+    - name: Configure system-auth PAM file
+      copy:
+        src: files/system-auth
+        dest: /etc/pam.d/system-auth
+        owner: root
+        group: root
+        mode: '0644'
+        
+    - name: Configure password-auth PAM file
+      copy:
+        src: files/password-auth
+        dest: /etc/pam.d/password-auth
+        owner: root
+        group: root
+        mode: '0644'
+        
+  handlers:
+    - name: Restart services for PAM changes to take effect
+      service:
+        name: "{{ item }}"
+        state: restarted
+      loop:
+        - sshd
+        - crond
+
+##################################users and group##########################
+
+---
+- name: Configure User and Group Settings Hardening for RHEL 9.1 SEC-5.4
+  hosts: all
+  become: true
+  tasks:
+
+    - name: Set password expiration and warning SEC-5.4.1
+      lineinfile:
+        path: /etc/login.defs
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      loop:
+        - { regexp: '^PASS_MAX_DAYS', line: 'PASS_MAX_DAYS   30' }
+        - { regexp: '^PASS_WARN_AGE', line: 'PASS_WARN_AGE   14' }
+        - { regexp: '^PASS_MIN_DAYS', line: 'PASS_MIN_DAYS   7' }
+
+    - name: Set password history retention
+      lineinfile:
+        path: /etc/security/pwquality.conf
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      loop:
+        - { regexp: '^# remember', line: 'remember=5' }
+
+    - name: Set default umask for users
+      lineinfile:
+        path: /etc/profile
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      loop:
+        - { regexp: '^umask', line: 'umask 027' }
+
+    - name: Remove world-writable permissions on user home directories
+      file:
+        path: "{{ item }}"
+        mode: '0700'
+      with_fileglob:
+        - /home/*
+
+    - name: Ensure password hashing algorithm is SHA512
+      lineinfile:
+        path: /etc/login.defs
+        regexp: '^ENCRYPT_METHOD'
+        line: 'ENCRYPT_METHOD SHA512'
+
+    - name: Restrict root and system accounts from direct logins
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      loop:
+        - { regexp: '^PermitRootLogin', line: 'PermitRootLogin no' }
+        - { regexp: '^AllowUsers', line: 'AllowUsers *@*' }
+        - { regexp: '^AllowGroups', line: 'AllowGroups *@*' }
+
+  handlers:
+    - name: Restart SSH service for configuration changes to take effect
+      service:
+        name: sshd
+        state: restarted
+
+#########################
