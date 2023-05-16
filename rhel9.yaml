@@ -1,4 +1,4 @@
-- name: CIS Hardening for RHEL 9.1
+- name: CIS Hardening for RHEL 9.1 SEC-2.9 (services)
   hosts: localhost
   become: true
   ignore_errors: yes
@@ -21,9 +21,25 @@
         - snmpd
         - cups
         - avahi-daemon
-        - firewalld
+        - ndflock
+        - rpcgssd
+        - rpcbind
+        - rpcidmapd
+        - ftpd
+        - httpd
+        - 
 
-    - name: Enable and start required services
+
+    - name: Remove unwanted rpm packages SEC-2.9.4 
+      yum:
+        name: "{{ item }}"
+        state: absent
+      loop:
+        - xorg-x11-server-common
+        - openldap-servers
+        - 
+  
+    - name: Enable and start required services SEC-2.9.2
       service:
         name: "{{ item }}"
         state: started
@@ -31,6 +47,7 @@
       loop:
         - sshd
         - firewalld
+        - chronyd
 
     - name: Set permissions and ownership on critical files
       file:
@@ -67,13 +84,19 @@
         name: sshd
         state: restarted
 
-###############PAM########################################
+###############PAM#####################################################################
 
 - name: Configure PAM Hardening for RHEL 9.1
   hosts: localhost
   become: true
+  ignore_errors: yes
   tasks:
   
+    - name: Configure password complexity requirements
+      copy:
+        source: /etc/pam.d/password-auth
+        dest: /etc/pam.d/ $date +"%FT%T"
+
     - name: Configure password complexity requirements
       lineinfile:
         path: /etc/pam.d/password-auth
@@ -102,7 +125,7 @@
 
     - name: Configure system-auth PAM file
       copy:
-        src: files/system-auth
+        src: fil/system-auth
         dest: /etc/pam.d/system-auth
         owner: root
         group: root
@@ -110,7 +133,7 @@
         
     - name: Configure password-auth PAM file
       copy:
-        src: files/password-auth
+        src: fil/password-auth
         dest: /etc/pam.d/password-auth
         owner: root
         group: root
@@ -130,6 +153,7 @@
 - name: Configure User and Group Settings Hardening for RHEL 9.1 SEC-5.4
   hosts: localhost
   become: true
+  ignore_errors: yes
   tasks:
 
     - name: Set password expiration and warning SEC-5.4.1
@@ -188,4 +212,4 @@
         name: sshd
         state: restarted
 
-#########################
+################################################################################################

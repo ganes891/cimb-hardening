@@ -1,0 +1,61 @@
+- name: Configure PAM Hardening for RHEL 9.1
+  hosts: localhost
+  become: true
+  ignore_errors: yes
+  tasks:
+  
+    - name: Configure password complexity requirements
+      copy:
+        source: /etc/pam.d/password-auth
+        dest: /etc/pam.d/ $date +"%FT%T"
+
+    - name: Configure password complexity requirements
+      lineinfile:
+        path: /etc/pam.d/password-auth
+        line: "{{ item }}"
+      loop:
+        - "password    requisite     pam_pwquality.so try_first_pass retry=3"
+        - "password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_authtok remember=5"
+        - "password    required      pam_deny.so"
+
+    - name: Configure account lockout policy
+      lineinfile:
+        path: /etc/pam.d/password-auth
+        line: "auth        required      pam_faillock.so preauth silent audit deny=3 unlock_time=900"
+        insertafter: "auth        substack      password-auth-ac"
+      
+    - name: Configure session lock timeout
+      lineinfile:
+        path: /etc/pam.d/system-auth
+        line: "session     optional      pam_faillock.so"
+        insertafter: "session     required      pam_env.so"
+      
+    - name: Configure password history enforcement
+      lineinfile:
+        path: /etc/pam.d/password-auth
+        line: "password    required      pam_pwhistory.so remember=5"
+
+    - name: Configure system-auth PAM file
+      copy:
+        src: fil/system-auth
+        dest: /etc/pam.d/system-auth
+        owner: root
+        group: root
+        mode: '0644'
+        
+    - name: Configure password-auth PAM file
+      copy:
+        src: fil/password-auth
+        dest: /etc/pam.d/password-auth
+        owner: root
+        group: root
+        mode: '0644'
+        
+  handlers:
+    - name: Restart services for PAM changes to take effect
+      service:
+        name: "{{ item }}"
+        state: restarted
+      loop:
+        - sshd
+        - crond
