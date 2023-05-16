@@ -1,37 +1,35 @@
-- name: CIS Hardening for RHEL 9.1 SEC-5.1
-  tasks:
-    - name: install and start cron service 
-      yum:
-        name: "{{ item }}"
-        state: present
-      loop:
-        - chrony
-    - name: Enable and start cron
-      service:
-        name: "{{ item }}"
-        state: started
-        enabled: yes
-      loop:
-        - chronyd
-    - name: Find cron files and directories
-      find:
-        paths:
-          - /etc
-        patterns:
-          - cron.hourly
-          - cron.daily
-          - cron.weekly
-          - cron.monthly
-          - cron.d
-          - crontab
-        file_type: any
-      register: cron_directories
+- name: install and start cron service 
+  yum:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - chrony
+- name: Enable and start cron
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  loop:
+    - chronyd
+- name: Find cron files and directories
+  find:
+    paths:
+      - /etc
+    patterns:
+      - cron.hourly
+      - cron.daily
+      - cron.weekly
+      - cron.monthly
+      - cron.d
+      - crontab
+    file_type: any
+  register: cron_directories
 
-    - name: Ensure permissions on cron files and directories are configured
-      ansible.builtin.file:
-        path: "{{ item.path }}"
-        owner: root
-        group: root
-        mode: og-rwx
-      with_items: "{{ cron_directories.files }}"
-        
+- name: Ensure permissions on cron files and directories are configured
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    owner: root
+    group: root
+    mode: og-rwx
+  with_items: "{{ cron_directories.files }}"
+    
