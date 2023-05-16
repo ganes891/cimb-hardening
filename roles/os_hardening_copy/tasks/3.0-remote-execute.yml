@@ -1,5 +1,8 @@
+
 - name: Transfer the script
-  copy: files/commands.sh dest=/home/root mode=0777
+  copy: 
+    src: files/commands.sh
+    dest: /home/root
 
 - name: Execute the script for RHB environment specific changes 
   command: sh /home/root/commands.sh
