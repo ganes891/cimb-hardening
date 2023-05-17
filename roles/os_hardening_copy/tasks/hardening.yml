@@ -20,8 +20,8 @@
 - import_tasks: 3.0-remote-execute.yml
   when: all_tasks_execute | bool
 
-- import_tasks: 2.1-partitionConf.yml
-  when: all_tasks_execute | bool
+#- import_tasks: 2.1-partitionConf.yml
+ # when: all_tasks_execute | bool
 
 
 
