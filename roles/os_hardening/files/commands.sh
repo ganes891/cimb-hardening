@@ -49,23 +49,23 @@ update-crypto-policies --set FUTURE
 
 #Additional commands########
 
-#####################partition configuration SEC - 2.1.1###################
-echo "Disabling Legacy Filesystems"
-cat > /etc/modprobe.d/CIS.conf << "EOF"
-install cramfs /bin/true
-install freevxfs /bin/true
-install jffs2 /bin/true
-install hfs /bin/true
-install hfsplus /bin/true
-install squashfs /bin/true
-install vfat /bin/true
-install udf /bin/true
-install dccp /bin/true
-install sctp /bin/true
-install rds /bin/true
-install tipc /bin/true
-install usb-storage /bin/true
-EOF
+#####################Dont use this lines as this will bring systemdown###################
+#echo "Disabling Legacy Filesystems"
+#cat > /etc/modprobe.d/CIS.conf << "EOF"
+#install cramfs /bin/true
+#install freevxfs /bin/true
+#install jffs2 /bin/true
+#install hfs /bin/true
+#install hfsplus /bin/true
+#install squashfs /bin/true
+#install vfat /bin/true
+#install udf /bin/true
+#install dccp /bin/true
+#install sctp /bin/true
+#install rds /bin/true
+#install tipc /bin/true
+#install usb-storage /bin/true
+#EOF
 #######################Secure Boot Settings - SEC 2.4.1#####################
 
 stat -Lc "%n %#a %u/%U %g/%G" /boot/grub2/grub.cfg /boot/grub2/grub.cfg 0700 0/root 0/root >> $AUDITDIR/permissions_on_bootloader_configs1_$TIME.log
