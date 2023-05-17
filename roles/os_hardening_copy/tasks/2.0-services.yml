@@ -36,7 +36,6 @@
     - openldap-servers
     - openldap-clients
     - telnet
-    - openldap
     - bind
     - bind-utils
 

@@ -1,0 +1,11 @@
+############################2.1.2 Partition Configuration  #############
+- name: Set option NOUID for other filesystem - SEC 2.1.2
+  mount:
+    path: /"{{ item }}"
+    src: "{{ item }}"
+    fstype: xfs
+    opts: '{{ proc_mnt_options }}'
+    state: mounted
+  loop:
+    - /var/log/audit
+    - /var/tmp

@@ -15,7 +15,9 @@ os_selinux_state: enforcing
 # Set the SELinux polixy.
 os_selinux_policy: targeted
 
-
+# Mount options for proc in /etc/fstab.
+#proc_mnt_options: 'rw,nosuid,nodev,noexec,relatime,hidepid={{ hidepid_option }}'
+proc_mnt_options: 'default,nosuid,nodev,noexec,hidepid={{ hidepid_option }}'
 
 
 
