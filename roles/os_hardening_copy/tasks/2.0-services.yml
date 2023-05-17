@@ -56,6 +56,8 @@
   template:
     src: 'etc/gnome/00-media-automount.j2'
     dest: '/etc/dconf/db/local.d/00-media-automount'
+
+- name: Disable Automounting - refresh to take effect 
   shell: dconf update
 
 - name: Disable USB storage 
