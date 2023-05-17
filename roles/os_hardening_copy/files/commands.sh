@@ -44,11 +44,20 @@ EOF
 rm -rf /etc/issue
 ln -s /etc/issue.net /etc/issue
 
-#Setting system policy to FUTURE SEC - 2.8.16
+#Setting system policy to FUTURE SEC - 2.8.16#####
 update-crypto-policies --set FUTURE
 
+#Additional commands########
 
-#########################network-changes#####################################
+
+#######################Secure Boot Settings - SEC 2.4.1#####################
+
+stat -Lc "%n %#a %u/%U %g/%G" /boot/grub2/grub.cfg /boot/grub2/grub.cfg 0700 0/root 0/root >> $AUDITDIR/permissions_on_bootloader_configs1_$TIME.log
+stat -Lc "%n %#a %u/%U %g/%G" /boot/grub2/user.cfg /boot/grub2/user.cfg 0600 0/root 0/root >> $AUDITDIR/permissions_on_bootloader_configs2_$TIME.log
+stat -Lc "%n %#a %u/%U %g/%G" /boot/grub2/grubenv /boot/grub2/grubenv 0600 0/root 0/root >> $AUDITDIR/permissions_on_bootloader_configs3_$TIME.log
+
+
+####################Network Security Configuration - SEC 3.0######################
 cat > /etc/sysctl.d/99-sysctl.conf << EOF
 net.ipv4.ip_forward=0
 net.ipv4.conf.all.send_redirects=0

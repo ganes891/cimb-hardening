@@ -1,6 +1,6 @@
 
 
-##################GDM SEC2.8##################################
+##################GDM SEC2.8.14##################################
 - name: GDM login banner is configured
   template:
     src: 'etc/gdm/custom.conf.j2'
