@@ -44,6 +44,10 @@ EOF
 rm -rf /etc/issue
 ln -s /etc/issue.net /etc/issue
 
+#Setting system policy to FUTURE SEC - 2.8.16
+update-crypto-policies --set FUTURE
+
+
 #########################network-changes#####################################
 cat > /etc/sysctl.d/99-sysctl.conf << EOF
 net.ipv4.ip_forward=0

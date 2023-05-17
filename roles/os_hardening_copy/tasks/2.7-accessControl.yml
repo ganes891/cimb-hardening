@@ -15,3 +15,9 @@
     policy: "{{ os_selinux_policy }}"
     state: "{{ os_selinux_state }}"
   when: package_check is succeeded
+
+##################GDM SEC2.8##################################
+- name: GDM login banner is configured
+  template:
+    src: 'etc/libuser.conf.j2'
+    dest: '/etc/gdm/custom.conf'
