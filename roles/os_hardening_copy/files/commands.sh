@@ -71,7 +71,37 @@ net.ipv6.conf.all.disable_ipv6=1
 fs.suid_dumpable=0
 EOF
 
-#######################################################
+######################SSH Server Configuration#################################
 
+echo "Configuring SSH related all hardening values - SEC - 5.2"
+cp /etc/ssh/sshd_config $AUDITDIR/sshd_config_$TIME.bak
+for i in \
+"LogLevel INFO" \
+"Protocol 2" \
+"X11Forwarding no" \
+"MaxAuthTries 3" \
+"IgnoreRhosts yes" \
+"HostbasedAuthentication no" \
+"PermitRootLogin yes" \
+"PermitEmptyPasswords no" \
+"PermitUserEnvironment no" \
+"ClientAliveInterval 300" \
+"ClientAliveCountMax 3" \
+"LoginGraceTime 60" \
+"UsePAM yes" \
+"MaxStartups 10:30:60" \
+"MaxSessions 4" \
+"AllowTcpForwarding no" \
+"MaxAuthTries 3" \
+"Ciphers aes128-ctr,aes192-ctr,aes256-ctr" \
+; do
+  [[ `egrep -q "^${i}" /etc/ssh/sshd_config` ]] && continue
+  option=${i%% *}
+  grep -q ${option} /etc/ssh/sshd_config && sed -i "s/.*${option}.*/$i/g" /etc/ssh/sshd_config || echo "$i" >> /etc/ssh/sshd_config
+done
 
+chown root:root /etc/ssh/sshd_config
+chmod 600 /etc/ssh/sshd_config
+
+#################################################################################
 

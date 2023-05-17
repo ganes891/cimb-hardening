@@ -74,9 +74,9 @@
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
   loop:
-    - { regexp: '^PermitRootLogin', line: 'PermitRootLogin no' }
-    - { regexp: '^AllowUsers', line: 'AllowUsers *@*' }
-    - { regexp: '^AllowGroups', line: 'AllowGroups *@*' }
+    - { regexp: '^PermitRootLogin', line: 'PermitRootLogin yes' }
+    #- { regexp: '^AllowUsers', line: 'AllowUsers *@*' }
+    #- { regexp: '^AllowGroups', line: 'AllowGroups *@*' }
   notify: Restart sshd
 
 - name: Ensure default group for the root account is GID 0 - 5.4.6 
