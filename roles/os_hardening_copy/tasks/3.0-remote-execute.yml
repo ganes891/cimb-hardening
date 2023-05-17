@@ -7,8 +7,6 @@
 - name: Execute the script for RHB environment specific changes 
   command: sh /var/tmp/script/commands.sh > /var/tmp/script/output-{{inventory_hostname}}.txt
 
-- name: Shell separate fields with commas  to converted final folder
-  shell: cat {{ HOSTNAME_ADDED }}
 - name: Copy txt back to localhost for csv conversion2  to syncfile folder
   synchronize:
     mode: pull 
