@@ -4,12 +4,10 @@ all_tasks_execute: true
 # the Ansible role dependency mechanism.
 os_hardening_enabled: true
 
-
 #######################################################
 # Remove packages with known security issues used by - 2.2
 os_security_packages_clean: true
 os_security_packages_list: ['xinetd', 'inetd', 'ypserv', 'telnet-server', 'rsh-server', 'prelink']
-
 
 #######################################################
 # Set the SELinux state, which can be either disabled permissive or enforcing - 2.7

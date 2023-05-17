@@ -32,3 +32,24 @@
 
 #- name: Ensure root is the only UID 0 account - sec - 6.2.5
  # shell: "cat /etc/passwd | awk -F: '($3 == 0) { print $1 }' root"
+
+
+
+
+- name: Check if selinux package is installed
+  command: rpm -qa | grep -i "{{ item }}"
+  loop:
+    - selinux
+  register: package_check
+  when: ansible_facts['os_family'] == "RedHat"
+
+- name: Print package installation  results
+  debug:
+    msg: "Iptables package is installed"
+  when: package_check is succeeded
+
+- name: Configure selinux | selinux-01
+  selinux:
+    policy: "{{ os_selinux_policy }}"
+    state: "{{ os_selinux_state }}"
+  when: package_check is succeeded
