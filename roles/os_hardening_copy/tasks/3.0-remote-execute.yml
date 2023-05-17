@@ -26,7 +26,7 @@
 
 ##################################################################################
 - name: Check if listed package are installed - SEC 3.17 
-  command: rpm -qa | grep -i "{{ item }}"
+  command: rpm -q "{{ item }}"
   loop:
     - iptables
   register: package_check

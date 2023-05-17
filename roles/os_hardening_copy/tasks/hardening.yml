@@ -11,6 +11,9 @@
 - import_tasks: 6.0-userGroupPerm.yml
   when: all_tasks_execute | bool
 
+- import_tasks: 4.0-LoggingAuditing.yml
+  when: all_tasks_execute | bool
+
 - import_tasks: 3.0-remote-execute.yml
   when: all_tasks_execute | bool
 
