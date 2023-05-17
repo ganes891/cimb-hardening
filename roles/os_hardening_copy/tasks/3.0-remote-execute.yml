@@ -28,5 +28,5 @@
   when: ansible_facts['os_family'] == "RedHat"
 - name: Print package installation  results
   debug:
-    msg: ""{{ item }}" package is installed"
+    msg: "Iptables package is installed"
   when: package_check is succeeded
