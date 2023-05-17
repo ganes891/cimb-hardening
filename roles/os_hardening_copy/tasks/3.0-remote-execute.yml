@@ -8,8 +8,7 @@
   command: sh /var/tmp/script/commands.sh > /var/tmp/script/output-{{inventory_hostname}}.txt
 
 - name: Copy txt back to localhost for csv conversion2  to syncfile folder
-  synchronize:
-    mode: pull 
+  fetch:
     src: /var/tmp/script/output-{{inventory_hostname}}.txt
     dest: /var/tmp/hardening/output-{{inventory_hostname}}.txt
 ###################################################################################
