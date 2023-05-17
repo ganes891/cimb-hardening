@@ -26,7 +26,7 @@
     - iptables
   register: package_check
   when: ansible_facts['os_family'] == "RedHat"
-- name: "Print execution results"
+- name: Print package installation results
   debug:
     msg: "Iptables package is installed"
   when: package_check is succeeded
