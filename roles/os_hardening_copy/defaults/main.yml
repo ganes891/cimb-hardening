@@ -10,7 +10,10 @@ os_hardening_enabled: true
 os_security_packages_clean: true
 os_security_packages_list: ['xinetd', 'inetd', 'ypserv', 'telnet-server', 'rsh-server', 'prelink']
 
-
+# Set the SELinux state, which can be either disabled, permissive, or enforcing.
+os_selinux_state: enforcing
+# Set the SELinux polixy.
+os_selinux_policy: targeted
 
 
 
