@@ -1,4 +1,4 @@
-- name: Disable unused services
+- name: Disable unused services SEC - 2.1
   service:
     name: "{{ item }}"
     state: stopped

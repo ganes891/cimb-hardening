@@ -13,6 +13,8 @@
     dest: /var/tmp/hardening/output-{{inventory_hostname}}.txt
 ###################################################################################
 
+- name: Create /etc/hosts.allow and /etc/hosts.deny SEC - 3.15
+  shelll: touch /etc/hosts.allow /etc/hosts.deny
 - name: Ensure permissions on /etc/hosts.allow are configured  SEC- 3.15 
   file:
     path: "{{ item.path }}"
