@@ -19,4 +19,14 @@
   loop:
     - { path: '/etc/hosts.allow', state: 'file', mode: '0644', owner: 'root', group: 'root' }
     - { path: '/etc/hosts.deny', state: 'file', mode: '0644', owner: 'root', group: 'root' }
-  
+
+- name: Check if listed package are installed - SEC 
+  command: rpm -qa | grep -i "{{ item }}"
+  loop:
+    - iptables
+  register: package_check
+  when: ansible_facts['os_family'] == "RedHat"
+- name: "Print execution results"
+  debug:
+    msg: "Iptables package is installed"
+  when: package_check is succeeded
