@@ -60,10 +60,8 @@
 
 - name: Disable USB storage 
   template:
-    src: 'etc/gnome/blacklist.conf'
+    src: 'etc/gnome/blacklist.conf.j2'
     dest: '/etc/modprobe.d/blacklist.conf'
-  shell: dconf update  
 
-no-usb-storage.conf
 ##########################################################
 
