@@ -13,23 +13,3 @@
     - { path: '/etc/ssh/sshd_config', state: 'file', mode: '0600', owner: 'root', group: 'root' }
   notify: Restart sshd
 
-- name: Audit SUID executables - SEC-6.1.12 
-  shell: df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type f perm -4000 
-
-- name: Audit SGID executables   - SEC-6.1.13
-  shell: df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type f perm -2000 
-
-#- name: Ensure password fields are not empty  
- # shell: "cat /etc/shadow | awk -F: '($2 == "" ) { print $1 " does not have a password "}'"
-
-- name: Ensure no legacy '+' entries exist in /etc/passwd - sec - 6.2.2 
-  shell: grep '^\+:' /etc/passwd
-
-- name: Ensure no legacy '+' entries exist in /etc/shadow - sec - 6.2.3
-  shell: grep '^\+:' /etc/shadow
-
-- name: Ensure no legacy '+' entries exist in /etc/group - sec - 6.2.4
-  shell: grep '^\+:' /etc/group 
-
-#- name: Ensure root is the only UID 0 account - sec - 6.2.5
- # shell: "cat /etc/passwd | awk -F: '($3 == 0) { print $1 }' root"
