@@ -49,7 +49,23 @@ update-crypto-policies --set FUTURE
 
 #Additional commands########
 
-
+#####################partition configuration SEC - 2.1.1###################
+echo "Disabling Legacy Filesystems"
+cat > /etc/modprobe.d/CIS.conf << "EOF"
+install cramfs /bin/true
+install freevxfs /bin/true
+install jffs2 /bin/true
+install hfs /bin/true
+install hfsplus /bin/true
+install squashfs /bin/true
+install vfat /bin/true
+install udf /bin/true
+install dccp /bin/true
+install sctp /bin/true
+install rds /bin/true
+install tipc /bin/true
+install usb-storage /bin/true
+EOF
 #######################Secure Boot Settings - SEC 2.4.1#####################
 
 stat -Lc "%n %#a %u/%U %g/%G" /boot/grub2/grub.cfg /boot/grub2/grub.cfg 0700 0/root 0/root >> $AUDITDIR/permissions_on_bootloader_configs1_$TIME.log
@@ -115,6 +131,120 @@ done
 
 chown root:root /etc/ssh/sshd_config
 chmod 600 /etc/ssh/sshd_config
+
+#############################SEC 2.5 ################################################
+echo "Setting core dump security limits..."
+grep -qxF '* hard core 0' /etc/security/limits.conf || echo '* hard core 0' >> /etc/security/limits.conf
+
+
+#############################Configure Sudo -SEC 2.6####################################
+grep -qxF 'Defaults    env_reset,     timestamp_timeout=30' /etc/sudoers || echo 'Defaults    env_reset,     timestamp_timeout=30' >> /etc/sudoers
+
+########################Selinux status 2.7##############################################
+setenforce enforcing
+
+
+##############################SEC 4.1####################################################
+echo "Generating additional logs..."
+echo '$FileCreateMode 0640' > /etc/rsyslog.d/CIS.conf
+echo 'auth /var/log/secure' >> /etc/rsyslog.d/CIS.conf
+echo 'kern.* /var/log/messages' >> /etc/rsyslog.d/CIS.conf
+echo 'daemon.* /var/log/messages' >> /etc/rsyslog.d/CIS.conf
+echo 'syslog.* /var/log/messages' >> /etc/rsyslog.d/CIS.conf
+chmod 600 /etc/rsyslog.d/CIS.conf
+
+echo "Enabling auditd service..."
+systemctl enable auditd
+
+echo "Configuring Audit Log Storage Size..."
+cp -a /etc/audit/auditd.conf /etc/audit/auditd.conf.bak
+sed -i 's/^space_left_action.*$/space_left_action = email/' /etc/audit/auditd.conf
+sed -i 's/^action_mail_acct.*$/action_mail_acct = root/' /etc/audit/auditd.conf
+sed -i 's/^admin_space_left_action.*$/admin_space_left_action = halt/' /etc/audit/auditd.conf
+sed -i 's/^max_log_file_action.*$/max_log_file_action = keep_logs/' /etc/audit/auditd.conf
+
+echo "Setting audit rules..."
+cat > /etc/audit/rules.d/CIS.rules << "EOF"
+-D
+-b 320
+
+-a always,exit -F arch=b64 -S adjtimex -S settimeofday -k time-change
+-a always,exit -F arch=b32 -S adjtimex -S settimeofday -S stime -k time-change
+-a always,exit -F arch=b64 -S clock_settime -k time-change
+-a always,exit -F arch=b32 -S clock_settime -k time-change
+-w /etc/localtime -p wa -k time-change
+
+-w /etc/group -p wa -k identity
+-w /etc/passwd -p wa -k identity
+-w /etc/gshadow -p wa -k identity
+-w /etc/shadow -p wa -k identity
+-w /etc/security/opasswd -p wa -k identity
+
+-a always,exit -F arch=b64 -S sethostname -S setdomainname -k system-locale
+-a always,exit -F arch=b32 -S sethostname -S setdomainname -k system-locale
+-w /etc/issue -p wa -k system-locale
+-w /etc/issue.net -p wa -k system-locale
+-w /etc/hosts -p wa -k system-locale
+-w /etc/sysconfig/network -p wa -k system-locale
+
+-w /var/log/faillog -p wa -k logins
+-w /var/log/lastlog -p wa -k logins
+-w /var/log/tallylog -p wa -k logins
+
+-w /var/run/utmp -p wa -k session
+-w /var/log/wtmp -p wa -k session
+-w /var/log/btmp -p wa -k session
+
+-a always,exit -F arch=b64 -S chmod -S fchmod -S fchmodat -F auid>=1000 -F auid!=4294967295 -k perm_mod
+-a always,exit -F arch=b32 -S chmod -S fchmod -S fchmodat -F auid>=1000 -F auid!=4294967295 -k perm_mod
+-a always,exit -F arch=b64 -S chown -S fchown -S fchownat -S lchown -F auid>=1000 -F auid!=4294967295 -k perm_mod
+-a always,exit -F arch=b32 -S chown -S fchown -S fchownat -S lchown -F auid>=1000 -F auid!=4294967295 -k perm_mod
+-a always,exit -F arch=b64 -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid>=1000 -F auid!=4294967295 -k perm_mod
+-a always,exit -F arch=b32 -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid>=1000 -F auid!=4294967295 -k perm_mod
+
+-a always,exit -F arch=b64 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -k access
+-a always,exit -F arch=b32 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -k access
+-a always,exit -F arch=b64 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -k access
+-a always,exit -F arch=b32 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -k access
+
+-a always,exit -F arch=b64 -S mount -F auid>=1000 -F auid!=4294967295 -k mounts
+-a always,exit -F arch=b32 -S mount -F auid>=1000 -F auid!=4294967295 -k mounts
+
+-a always,exit -F arch=b64 -S unlink -S unlinkat -S rename -S renameat -F auid>=1000 -F auid!=4294967295 -k delete
+-a always,exit -F arch=b32 -S unlink -S unlinkat -S rename -S renameat -F auid>=1000 -F auid!=4294967295 -k delete
+
+-w /etc/sudoers -p wa -k scope
+
+-w /var/log/sudo.log -p wa -k actions
+
+-w /sbin/insmod -p x -k modules
+-w /sbin/rmmod -p x -k modules
+-w /sbin/modprobe -p x -k modules
+-a always,exit -F arch=b64 -S init_module -S delete_module -k modules
+
+-w /etc/selinux/ -p wa -k MAC-policy
+
+-e 2
+EOF
+echo "Generating audit rules..."
+augenrules
+
+echo "Configuring Cron and Anacron..."
+yum -y install cronie-anacron >> $AUDITDIR/service_install_$TIME.log
+systemctl enable crond
+for i in anacrontab crontab cron.hourly cron.daily cron.weekly cron.monthly; do
+  chown root:root /etc/$i
+  chmod 600 /etc/$i
+done
+chmod 700 /etc/cron.d
+
+echo "Handle At and Cron Allow Files..."
+for file in at cron; do
+  touch /etc/${file}.allow
+  chown root:root /etc/${file}.allow
+  chmod 600 /etc/${file}.allow
+  rm -rf /etc/${file}.deny
+done
 
 ###############################SEC- 5.4.5#################################################
 echo "Ensure system accounts are secured  - SEC - 5.4.5 "
