@@ -1,1 +1,0 @@
-RHEL 9.1 Hardening script
