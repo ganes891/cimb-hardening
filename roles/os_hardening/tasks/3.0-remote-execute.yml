@@ -28,14 +28,14 @@
 
 ##################################################################################
 - name: Check if listed package are installed - SEC 3.17 
-  command: rpm -q "{{ item }}"
+  command: rpm -qa "{{ item }}"
   loop:
-    - iptables
+    - iptables-libs
   register: package_check
   when: ansible_facts['os_family'] == "RedHat"
 - name: Print package installation  results
   debug:
-    msg: "Iptables package is installed"
+    msg: "Iptables package is installed already"
   when: package_check is succeeded
 
 - name: Install Iptables package since rpm not installed already
