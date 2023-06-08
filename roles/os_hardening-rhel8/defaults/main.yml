@@ -1,0 +1,23 @@
+all_tasks_execute: true
+
+# Set to false to turn the role into a no-op. Useful when using
+# the Ansible role dependency mechanism.
+os_hardening_enabled: true
+
+#######################################################
+# Remove packages with known security issues used by - 2.2
+os_security_packages_clean: true
+os_security_packages_list: ['xinetd', 'inetd', 'ypserv', 'telnet-server', 'rsh-server', 'prelink']
+
+#######################################################
+# Set the SELinux state, which can be either disabled permissive or enforcing - 2.7
+os_selinux_state: enforcing
+# Set the SELinux polixy.
+os_selinux_policy: targeted
+
+# Mount options for proc in /etc/fstab.
+#proc_mnt_options: 'rw,nosuid,nodev,noexec,relatime,hidepid={{ hidepid_option }}'
+proc_mnt_options: 'default,nosuid,nodev,noexec,hidepid={{ hidepid_option }}'
+
+
+

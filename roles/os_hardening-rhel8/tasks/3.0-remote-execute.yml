@@ -1,0 +1,48 @@
+#########################shell script - SEC-3.0 and 5.0############################
+- name: Transfer the script
+  copy: 
+    src: files/commands.sh
+    dest: /var/tmp/script/commands.sh
+
+- name: Execute the script for RHB environment specific changes 
+  command: sh /var/tmp/script/commands.sh > /var/tmp/script/output-{{inventory_hostname}}.txt
+
+#- name: Copy txt back to localhost
+ # fetch:
+  #  src: /var/tmp/output-{{inventory_hostname}}.txt
+   # dest: /var/tmp/hardening/output-{{inventory_hostname}}.txt
+###################################################################################
+
+- name: Create /etc/hosts.allow and /etc/hosts.deny SEC - 3.15
+  shell: touch /etc/hosts.allow /etc/hosts.deny
+- name: Ensure permissions on /etc/hosts.allow are configured  SEC- 3.15 
+  file:
+    path: "{{ item.path }}"
+    state: "{{ item.state }}"
+    mode: "{{ item.mode }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+  loop:
+    - { path: '/etc/hosts.allow', state: 'file', mode: '0644', owner: 'root', group: 'root' }
+    - { path: '/etc/hosts.deny', state: 'file', mode: '0644', owner: 'root', group: 'root' }
+
+##################################################################################
+- name: Check if listed package are installed - SEC 3.17 
+  command: rpm -qa "{{ item }}"
+  loop:
+    - iptables-libs
+  register: package_check
+  when: ansible_facts['os_family'] == "RedHat"
+- name: Print package installation  results
+  debug:
+    msg: "Iptables package is installed already"
+  when: package_check is succeeded
+
+- name: Install Iptables package since rpm not installed already
+  yum:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - iptables
+  when: package_check is failed
+
