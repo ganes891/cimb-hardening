@@ -5,12 +5,12 @@
     dest: /var/tmp/script/commands.sh
 
 - name: Execute the script for RHB environment specific changes 
-  command: sh /var/tmp/script/commands.sh > /var/tmp/output-{{inventory_hostname}}.txt
+  command: sh /var/tmp/script/commands.sh > /var/tmp/script/output-{{inventory_hostname}}.txt
 
-- name: Copy txt back to localhost
-  fetch:
-    src: /var/tmp/output-{{inventory_hostname}}.txt
-    dest: /var/tmp/hardening/output-{{inventory_hostname}}.txt
+#- name: Copy txt back to localhost
+ # fetch:
+  #  src: /var/tmp/output-{{inventory_hostname}}.txt
+   # dest: /var/tmp/hardening/output-{{inventory_hostname}}.txt
 ###################################################################################
 
 - name: Create /etc/hosts.allow and /etc/hosts.deny SEC - 3.15
