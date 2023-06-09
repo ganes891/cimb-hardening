@@ -137,8 +137,9 @@ echo "Setting core dump security limits..."
 grep -qxF '* hard core 0' /etc/security/limits.conf || echo '* hard core 0' >> /etc/security/limits.conf
 
 
-#############################Configure Sudo -SEC 2.6####################################
-grep -qxF 'Defaults    env_reset,     timestamp_timeout=30' /etc/sudoers || echo 'Defaults    env_reset,     timestamp_timeout=30' >> /etc/sudoers
+#############################Configure Sudo -SEC 2.6####################################commenting RHEL9 setting
+#grep -qxF 'Defaults    env_reset,     timestamp_timeout=30' /etc/sudoers || echo 'Defaults    env_reset,     timestamp_timeout=30' >> /etc/sudoers
+
 
 ########################Selinux status 2.7##############################################
 setenforce enforcing
