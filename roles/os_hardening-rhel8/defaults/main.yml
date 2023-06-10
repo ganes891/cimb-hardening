@@ -57,7 +57,7 @@ cis_pwunlock_time: "900" # Time in seconds before the login attempt can be tried
 
 # 5.3.3
 cis_pwretry_number: "3" # Number of times a password can be attempted before sending back a failure
-cis_pwreuse_number: "5" # Ensure password reuse is limited to this number
+cis_pwreuse_number: "10" # Ensure password reuse is limited to this number
 
 # 5.3.4
 cis_passwd_hash: "sha512" # Options are sha512 or md5
