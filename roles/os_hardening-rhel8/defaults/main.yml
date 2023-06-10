@@ -1,7 +1,8 @@
-all_tasks_execute: true
-
 # the Ansible role dependency mechanism.
 os_hardening_enabled: true
+
+#####with in tasks#####################
+all_tasks_execute: true
 
 #######################################################
 # Remove packages with known security issues used by - 2.2
