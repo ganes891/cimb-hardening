@@ -5,7 +5,7 @@
     dest: /var/tmp/script/commands.sh
 
 - name: Execute the script for RHB environment specific changes 
-  command: sh /var/tmp/script/commands.sh > /var/tmp/script/output-{{inventory_hostname}}.txt
+  command: sh /var/tmp/script/commands.sh #> /var/tmp/script/output-{{inventory_hostname}}.txt
 
 #- name: Copy txt back to localhost
  # fetch:
@@ -26,7 +26,7 @@
     - { path: '/etc/hosts.allow', state: 'file', mode: '0644', owner: 'root', group: 'root' }
     - { path: '/etc/hosts.deny', state: 'file', mode: '0644', owner: 'root', group: 'root' }
 
-##################################################################################
+####################################################################################
 - name: Check if listed package are installed - SEC 3.17 
   command: rpm -qa "{{ item }}"
   loop:
