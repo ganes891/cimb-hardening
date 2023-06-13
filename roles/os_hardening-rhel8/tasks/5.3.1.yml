@@ -2,6 +2,7 @@
 ---
 
 # 5.3.1 Ensure password creation requirements are configured
+# to tune with more parameter in future refer -> https://access.redhat.com/solutions/6979714
 
 - name: 5.3.1 - Ensure password creation requirements are configured
   lineinfile:
