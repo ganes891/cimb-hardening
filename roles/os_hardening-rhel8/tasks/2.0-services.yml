@@ -27,6 +27,7 @@
     - tftp
     - rsyncd
     - sssd
+    - authselect
     
 - name: Uninstall unwanted rpm packages SEC-2.9.4 
   yum:
