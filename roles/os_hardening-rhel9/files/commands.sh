@@ -48,7 +48,14 @@ ln -s /etc/issue.net /etc/issue
 update-crypto-policies --set FUTURE
 
 #Additional commands########
+#Run the following commands to set permissions on your grub configuration:
 
+chown root:root /boot/grub2/grub.cfg
+chmod og-rwx /boot/grub2/grub.cfg
+chown root:root /boot/grub2/user.cfg
+chmod og-rwx /boot/grub2/user.cfg
+yum remove xorg-x11* -y
+yum remove telnet -y
 #####################Dont use this lines as this will bring systemdown###################
 #echo "Disabling Legacy Filesystems"
 #cat > /etc/modprobe.d/CIS.conf << "EOF"
@@ -74,7 +81,8 @@ stat -Lc "%n %#a %u/%U %g/%G" /boot/grub2/grubenv /boot/grub2/grubenv 0600 0/roo
 
 
 ####################Network Security Configuration - SEC 3.0######################
-cat > /etc/sysctl.d/99-sysctl.conf << EOF
+#cat > /etc/sysctl.d/99-sysctl.conf << EOF -> V2 changes
+cat > /etc/sysctl.d/sysctl.conf << EOF
 net.ipv4.ip_forward=0
 net.ipv4.conf.all.send_redirects=0
 net.ipv4.conf.default.send_redirects=0
@@ -99,6 +107,10 @@ net.ipv6.conf.default.accept_redirects=0
 net.ipv6.conf.all.disable_ipv6=1
 fs.suid_dumpable=0
 EOF
+
+sysctl -w net.ipv4.conf.all.send_redirects=0
+sysctl -w net.ipv4.conf.default.send_redirects=0
+sysctl -w net.ipv4.route.flush=1
 
 ######################SSH Server Configuration#################################
 
