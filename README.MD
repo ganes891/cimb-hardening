@@ -1,12 +1,14 @@
 Pre-requisites:
  
-•	Please take a latest snapshot backup of VM before run the script.
+Please take a latest snapshot backup of VM before run the script.
  
-•	Install the below package
+Install the below package:
+-------------------------
 #rpm -qa | grep -i ansible
 nsible-core-2.14.2-4.el9.x86_64
  
-•	Make sure the version
+Make sure the version:
+-----------------------
 # ansible --version
 ansible [core 2.14.2]
 config file = /etc/ansible/ansible.cfg
@@ -19,12 +21,14 @@ jinja version = 3.1.2
 libyaml = True
  
 #Make sure the following python3.11 or 3.9 installed
+----------------------------------------------------
 [root@ocp-devops-node-01 ~]# py
 pydoc       pydoc3      pydoc3.11   pydoc3.9    pyinotify   python      python3     python3.11  python3.9
 
 ####################commands to run in each versions###########################
 
 Command to execute the script 
+------------------------------
 
  For RHEL8.8 or above
  # ansible-playbook -i inventory hardening.yml -e "BUILD_METHOD=hardening-rhel8"
