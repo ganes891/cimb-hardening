@@ -1,22 +1,6 @@
 # 5.3.1 Ensure password creation requirements are configured
 # to tune with more parameter in future refer -> https://access.redhat.com/solutions/6979714
 
-###pre checks for pam packag##########
-- name: upgrade authselect and PAM
-  shell: dnf upgrade authselect-1.2.1-2.el8 pam-1.3.1-8.el8
-
-- name: Check if rsyslog package are installed
-  command: rpm -qa | grep -i "{{ item }}"
-  loop:
-    - authselect-1.2.1-2.el8
-    - pam-1.3.1-8.el8
-  register: package_check
-  
-- name: Print package installation results
-  debug:
-    msg: "authselect and pam package is installed and upgraded"
-  when: package_check is succeeded
-
 #####pam passsword quality#############
 - name: 5.3.1 - Ensure password creation requirements are configured
   lineinfile:

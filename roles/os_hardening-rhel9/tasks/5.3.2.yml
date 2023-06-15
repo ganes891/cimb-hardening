@@ -1,6 +1,21 @@
-# Standards: 1.1.35
+# article followed https://access.redhat.com/solutions/6980935
 ---
+- name: upgrade authselect and PAM
+  shell: dnf upgrade authselect pam
 
+- name: Check if PAM package are installed
+  command: rpm -qa | grep -i "{{ item }}"
+  loop:
+    - authselect
+    - pam
+  register: package_check
+  
+- name: Print package installation results
+  debug:
+    msg: "authselect and pam package is installed and upgraded"
+  when: package_check is succeeded
+
+####################################################################
 # 5.3.2 Ensure lockout for failed password attempts is configured
 - name: 5.3.2 and 5.3.3 - Ensure authconfig is installed for linking and later command running
   yum:
@@ -18,24 +33,9 @@
   with_items:
     - { src: 'password-auth-local.j2', dest: 'password-auth-local' }
     - { src: 'system-auth-local.j2', dest: 'system-auth-local' }
-  tags:
-    - level-1
-    - section-5
-    - "5.3.2"
-    - scored
-
-#- name: 5.3.2 and 5.3.3 - Link password|system-auth-local to password|system-auth
-#  file:
-#    src: '/etc/pam.d/{{ item.src }}'
-#    dest: '/etc/pam.d/{{ item.dest }}'
-#    owner: root
-#    group: root
-#    state: link
-#  with_items:
-#    - { src: 'password-auth-ac', dest: 'password-auth' }
-#    - { src: 'system-auth-ac', dest: 'system-auth' }
-#  tags:
-#    - level-1
-#    - section-5
-#    - "5.3.2"
-#    - scored
+  
+################# for RHEL9.1 ############
+- block:
+  - name: Set the project path for production environment
+    shell: df -h 
+  when: RHEL_VERSION == "9.1" 
