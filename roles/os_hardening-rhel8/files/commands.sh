@@ -107,9 +107,9 @@ net.ipv6.conf.all.disable_ipv6=1
 fs.suid_dumpable=0
 EOF
 
-sysctl -w net.ipv4.conf.all.send_redirects=0
-sysctl -w net.ipv4.conf.default.send_redirects=0
-sysctl -w net.ipv4.route.flush=1
+#sysctl -w net.ipv4.conf.all.send_redirects=0
+#sysctl -w net.ipv4.conf.default.send_redirects=0
+#sysctl -w net.ipv4.route.flush=1
 
 ######################SSH Server Configuration#################################
 

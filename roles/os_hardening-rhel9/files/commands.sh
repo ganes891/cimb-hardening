@@ -81,7 +81,7 @@ stat -Lc "%n %#a %u/%U %g/%G" /boot/grub2/grubenv /boot/grub2/grubenv 0600 0/roo
 
 
 ####################Network Security Configuration - SEC 3.0######################
-cat > /etc/sysctl.d/sysctl.conf << EOF
+cat > /etc/sysctl.d/99-sysctl.conf << EOF
 net.ipv4.ip_forward=0
 net.ipv4.conf.all.send_redirects=0
 net.ipv4.conf.default.send_redirects=0
