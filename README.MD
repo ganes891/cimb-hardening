@@ -2,7 +2,7 @@
 #################### Hardening script RHEL8 & RHEL9########################
 ###########################################################################
 Pre-requisites:
- 
+---------------
 Please take a latest snapshot backup of VM before run the script.
  
 Install the below package:
