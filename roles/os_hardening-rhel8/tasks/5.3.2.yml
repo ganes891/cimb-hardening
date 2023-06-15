@@ -17,7 +17,7 @@
 
 - name: Check if PAM package are installed
   command: authselect enable-feature with-pwhistory
-  
+
 
 
 ####################################################################
@@ -41,7 +41,7 @@
   
 ###################### for RHEL8.7 or below ##########################
 - block:
-  - name: Set the project path for production environment
+  - name: Only for RHEL 8.7 or below version PAM change
     shell: df -h 
-  when: RHEL_VERSION == "8.7" 
+  when: RHEL_VERSION == "8.7"
   

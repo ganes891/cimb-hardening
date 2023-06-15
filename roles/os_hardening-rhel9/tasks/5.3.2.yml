@@ -36,6 +36,6 @@
   
 ################# for RHEL9.1 ############
 - block:
-  - name: Set the project path for production environment
+  - name: Only for RHEL 9.1 or below version PAM change
     shell: df -h 
   when: RHEL_VERSION == "9.1" 
