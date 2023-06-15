@@ -1,7 +1,7 @@
 # article followed https://access.redhat.com/solutions/6980935
 ---
-- name: upgrade authselect and PAM
-  shell: dnf upgrade authselect pam
+#- name: upgrade authselect and PAM
+ # shell: dnf upgrade authselect pam 
 
 - name: Check if PAM package are installed
   command: rpm -qa | grep -i "{{ item }}"
