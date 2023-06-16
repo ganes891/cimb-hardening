@@ -38,6 +38,6 @@ Command to execute the script
  for RHEL8.7 or below
  # ansible-playbook -i inventory hardening.yml -e "BUILD_METHOD=hardening-rhel8" -e "RHEL_VERSION=8.7" 
  for RHEL9.2 or above
- # ansible-playbook -i inventory hardening.yml -e "BUILD_METHOD=hardening-rhel9" -e
+ # ansible-playbook -i inventory hardening.yml -e "BUILD_METHOD=hardening-rhel9"
  for RHEL9.1 
  # ansible-playbook -i inventory hardening.yml -e "BUILD_METHOD=hardening-rhel9" -e "RHEL_VERSION=9.1"
