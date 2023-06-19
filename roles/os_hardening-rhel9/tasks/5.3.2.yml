@@ -1,7 +1,7 @@
 # article followed https://access.redhat.com/solutions/6980935
 ---
 #- name: upgrade authselect and PAM
- # shell: dnf upgrade authselect pam 
+ # shell: dnf upgrade authselect pam
 
 - name: Check if PAM package are installed
   command: rpm -qa | grep -i "{{ item }}"
@@ -15,12 +15,23 @@
     msg: "authselect and pam package is installed and upgraded"
   when: package_check is succeeded
 
+- name: Check if PAM package are installed
+  command: authselect enable-feature with-pwhistory
+
+
+
 ####################################################################
 # 5.3.2 Ensure lockout for failed password attempts is configured
 - name: 5.3.2 and 5.3.3 - Ensure authconfig is installed for linking and later command running
   yum:
     name: authselect
     state: present
+
+- name: failock commands
+  shell: grep -qxF 'deny=4' /etc/security/faillock.conf || echo 'deny=4' >> /etc/security/faillock.conf 
+  shell: grep -qxF 'unlock_time=900' /etc/security/faillock.conf || echo 'unlock_time=900' >> /etc/security/faillock.conf 
+  shell: grep -qxF 'silent' /etc/security/faillock.conf || echo 'silent' >> /etc/security/faillock.conf 
+  shell: grep -qxF 'dir=/var/log/faillock' /etc/security/faillock.conf || echo 'dir=/var/log/faillock' >> /etc/security/faillock.conf 
 
 - name: 5.3.2 and 5.3.3 - Ensure lockout for failed login attempts and password history - for password-auth and system-auth
   template:
@@ -33,6 +44,7 @@
   with_items:
     - { src: 'password-auth-local.j2', dest: 'password-auth-local' }
     - { src: 'system-auth-local.j2', dest: 'system-auth-local' }
+  
   
 ################# for RHEL9.1 ############
 - block:
