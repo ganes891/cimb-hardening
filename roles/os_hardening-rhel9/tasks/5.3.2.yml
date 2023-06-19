@@ -27,11 +27,17 @@
     name: authselect
     state: present
 
-- name: failock commands
-  shell: grep -qxF 'deny=4' /etc/security/faillock.conf || echo 'deny=4' >> /etc/security/faillock.conf 
-  shell: grep -qxF 'unlock_time=900' /etc/security/faillock.conf || echo 'unlock_time=900' >> /etc/security/faillock.conf 
-  shell: grep -qxF 'silent' /etc/security/faillock.conf || echo 'silent' >> /etc/security/faillock.conf 
-  shell: grep -qxF 'dir=/var/log/faillock' /etc/security/faillock.conf || echo 'dir=/var/log/faillock' >> /etc/security/faillock.conf 
+- name: faillock configs and commands to enable faillock
+  shell: "{{ item }}"
+  with_items:
+    -  authselect current
+    -  authselect check
+    -  authselect enable-feature with-faillock
+    -  authselect select sssd with-faillock
+    -  grep -qxF 'deny=4' /etc/security/faillock.conf || echo 'deny=4' >> /etc/security/faillock.conf
+    -  grep -qxF 'unlock_time=900' /etc/security/faillock.conf || echo 'unlock_time=900' >> /etc/security/faillock.conf
+    -  grep -qxF 'silent' /etc/security/faillock.conf || echo 'silent' >> /etc/security/faillock.conf
+    -  grep -qxF 'dir=/var/log/faillock' /etc/security/faillock.conf || echo 'dir=/var/log/faillock' >> /etc/security/faillock.conf
 
 - name: 5.3.2 and 5.3.3 - Ensure lockout for failed login attempts and password history - for password-auth and system-auth
   template:
@@ -44,8 +50,7 @@
   with_items:
     - { src: 'password-auth-local.j2', dest: 'password-auth-local' }
     - { src: 'system-auth-local.j2', dest: 'system-auth-local' }
-  
-  
+    
 ################# for RHEL9.1 ############
 - block:
   - name: Only for RHEL 9.1 or below version PAM change
