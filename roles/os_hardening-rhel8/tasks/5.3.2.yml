@@ -27,7 +27,12 @@
     name: authselect
     state: present
 
-- name: failock commands
+- name: faillock configs and commands to enable faillock
+  shell : authselect current                              #  <--- To check/verify current settings 
+  shell: authselect check
+  shell: authselect enable-feature with-faillock 
+  shell: authselect select sssd with-faillock              #<--- To select a profile and enable faillock feature in single command
+  #shell: authselect select sssd with-faillock  --force     #<--- Use --force to overwrite the settings if needed
   shell: grep -qxF 'deny=4' /etc/security/faillock.conf || echo 'deny=4' >> /etc/security/faillock.conf 
   shell: grep -qxF 'unlock_time=900' /etc/security/faillock.conf || echo 'unlock_time=900' >> /etc/security/faillock.conf 
   shell: grep -qxF 'silent' /etc/security/faillock.conf || echo 'silent' >> /etc/security/faillock.conf 
