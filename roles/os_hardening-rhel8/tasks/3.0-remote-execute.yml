@@ -5,7 +5,7 @@
     dest: /var/tmp/commands.sh
 
 - name: Execute the script for RHB environment specific changes 
-  command: chmod 777 /var/tmp/commands.sh && sh /var/tmp/commands.sh #> /var/tmp/script/output-{{inventory_hostname}}.txt
+  command: sh /var/tmp/commands.sh #> /var/tmp/script/output-{{inventory_hostname}}.txt
 
 #- name: Copy txt back to localhost
  # fetch:
