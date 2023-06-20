@@ -49,11 +49,12 @@ update-crypto-policies --set FUTURE
 
 #Additional commands########
 #Run the following commands to set permissions on your grub configuration:
-chown root:root /boot/grub2/grub.cfg
-chmod og-rwx /boot/grub2/grub.cfg
-chown root:root /boot/grub2/user.cfg
-chmod og-rwx /boot/grub2/user.cfg
+#chown root:root /boot/grub2/grub.cfg
+#chmod og-rwx /boot/grub2/grub.cfg
+#chown root:root /boot/grub2/user.cfg
+#chmod og-rwx /boot/grub2/user.cfg
 yum remove xorg-x11* -y
+sleep 10
 yum remove telnet* -y
 #####################Dont use this lines as this will bring systemdown###################
 #echo "Disabling Legacy Filesystems"
