@@ -21,7 +21,7 @@
 
 ####################################################################
 # 5.3.2 Ensure lockout for failed password attempts is configured
-- name: 5.3.2 and 5.3.3 - Ensure authconfig is installed for linking and later command running
+- name: 5.3.2 and 5.3.3 - Ensure authselect is installed for linking and later command running
   yum:
     name: authselect
     state: present
