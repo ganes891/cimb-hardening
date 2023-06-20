@@ -153,7 +153,6 @@ grep -qxF '* hard core 0' /etc/security/limits.conf || echo '* hard core 0' >> /
 grep -qxF 'Defaults    env_reset,     timestamp_timeout=30' /etc/sudoers || echo 'Defaults    env_reset,     timestamp_timeout=30' >> /etc/sudoers
 grep -qxF 'Defaults use_pty' /etc/sudoers || echo 'Defaults use_pty' >> /etc/sudoers
 
-
 ########################Selinux status 2.7##############################################
 setenforce enforcing
 
