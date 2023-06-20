@@ -60,6 +60,14 @@
     line: "{{ item.line }}"
   loop:
     - { regexp: '^umask', line: 'umask 027' }
+    
+- name: Set default umask for users SEC-5.4.2
+  lineinfile:
+    path: /etc/bashrc
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  loop:
+    - { regexp: '^umask', line: 'umask 027' }
 
 - name: Remove world-writable permissions on user home directories - sec-6.1.9
   file:

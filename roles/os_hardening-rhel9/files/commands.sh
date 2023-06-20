@@ -55,7 +55,7 @@ chmod og-rwx /boot/grub2/grub.cfg
 chown root:root /boot/grub2/user.cfg
 chmod og-rwx /boot/grub2/user.cfg
 yum remove xorg-x11* -y
-yum remove telnet -y
+yum remove telnet* -y
 #####################Dont use this lines as this will bring systemdown###################
 #echo "Disabling Legacy Filesystems"
 #cat > /etc/modprobe.d/CIS.conf << "EOF"
