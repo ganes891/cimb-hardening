@@ -3,8 +3,8 @@ AUDITDIR="/var/tmp/$(hostname -s)_audit"
 TIME="$(date +%F_%T)"
 . /etc/os-release
 MAIN_VERSION_ID="$(echo ${VERSION_ID} |cut -f1 -d'.')"
-if [[ ${MAIN_VERSION_ID} -lt 8 ]]; then
-  echo "OS release lower than 8 not supported. You are running ${VERSION_ID}"
+if [[ ${MAIN_VERSION_ID} -lt 9 ]]; then
+  echo "OS release lower than 9 not supported. You are running ${VERSION_ID}"
 fi
 
 mkdir -p $AUDITDIR
@@ -49,12 +49,12 @@ update-crypto-policies --set FUTURE
 
 #Additional commands########
 #Run the following commands to set permissions on your grub configuration:
-#chown root:root /boot/grub2/grub.cfg
-#chmod og-rwx /boot/grub2/grub.cfg
-#chown root:root /boot/grub2/user.cfg
-#chmod og-rwx /boot/grub2/user.cfg
+
+chown root:root /boot/grub2/grub.cfg
+chmod og-rwx /boot/grub2/grub.cfg
+chown root:root /boot/grub2/user.cfg
+chmod og-rwx /boot/grub2/user.cfg
 yum remove xorg-x11* -y
-sleep 10
 yum remove telnet* -y
 #####################Dont use this lines as this will bring systemdown###################
 #echo "Disabling Legacy Filesystems"
@@ -81,7 +81,6 @@ stat -Lc "%n %#a %u/%U %g/%G" /boot/grub2/grubenv /boot/grub2/grubenv 0600 0/roo
 
 
 ####################Network Security Configuration - SEC 3.0######################
-#cat > /etc/sysctl.d/99-sysctl.conf << EOF -> V2 changes
 cat > /etc/sysctl.d/sysctl.conf << EOF
 net.ipv4.ip_forward=0
 net.ipv4.conf.all.send_redirects=0
@@ -111,7 +110,6 @@ EOF
 sysctl -w net.ipv4.conf.all.send_redirects=0
 sysctl -w net.ipv4.conf.default.send_redirects=0
 sysctl -w net.ipv4.route.flush=1
-
 ######################SSH Server Configuration#################################
 
 echo "Configuring SSH related all hardening values - SEC - 5.2"
@@ -149,10 +147,9 @@ echo "Setting core dump security limits..."
 grep -qxF '* hard core 0' /etc/security/limits.conf || echo '* hard core 0' >> /etc/security/limits.conf
 
 
-#############################Configure Sudo -SEC 2.6####################################commenting RHEL9 setting
+#############################Configure Sudo -SEC 2.6####################################
 grep -qxF 'Defaults    env_reset,     timestamp_timeout=30' /etc/sudoers || echo 'Defaults    env_reset,     timestamp_timeout=30' >> /etc/sudoers
 grep -qxF 'Defaults use_pty' /etc/sudoers || echo 'Defaults use_pty' >> /etc/sudoers
-
 ########################Selinux status 2.7##############################################
 setenforce enforcing
 
@@ -542,5 +539,3 @@ for dir in `/bin/cat /etc/passwd |\
         echo ".forward file $dir/.forward exists"  >> $AUDITDIR/audit_$TIME.log
     fi
 done
-
-

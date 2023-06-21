@@ -1,16 +1,22 @@
-#########################shell script - SEC-3.0 and 5.0############################
-- name: Transfer the script
-  copy: 
-    src: files/commands.sh
-    dest: /var/tmp/commands.sh
-
+- name: Transfer the script to remote node
+  template:
+    src: 'templates/shell/{{ item.src }}'
+    dest: '/var/tmp/{{ item.dest }}'
+    owner: root
+    group: root
+    mode: 755
+    backup: yes
+  with_items:
+    - { src: 'commands.j2', dest: 'commands.sh' }
+    
 - name: Execute the script for RHB environment specific changes 
-  command: sh /var/tmp/commands.sh #> /var/tmp/script/output-{{inventory_hostname}}.txt
+  command: sh /var/tmp/commands.sh
 
-#- name: Copy txt back to localhost
- # fetch:
-  #  src: /var/tmp/output-{{inventory_hostname}}.txt
-   # dest: /var/tmp/hardening/output-{{inventory_hostname}}.txt
+- name: Delete content & directory
+  ansible.builtin.file:
+    state: absent
+    path: /var/tmp/commands.sh
+
 ###################################################################################
 
 - name: Create /etc/hosts.allow and /etc/hosts.deny SEC - 3.15
