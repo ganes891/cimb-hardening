@@ -6,4 +6,4 @@
   roles:
     - { role: os_hardening-rhel9, when: BUILD_METHOD == 'hardening-rhel9' }
     - { role: os_hardening-rhel8, when: BUILD_METHOD == 'hardening-rhel8' }
-    #- { role: ssh_hardening , when: BUILD_METHOD == 'ssh_hardening' }
+
