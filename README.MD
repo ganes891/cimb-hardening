@@ -3,7 +3,7 @@
 ########################################################################################
 Pre-requisites: 
 ---------------
-Please take a latest snapshot backup of VM before run the script.
+Please take a latest snapshot backup of VM before run the script (*****Mandatory*****)
  
 Install the below package:
 -------------------------
