@@ -1,0 +1,13 @@
+- name: Ensure permissions on bootloader config are configured - 1.4.1
+  shell: "{{ item }}"
+  with_items:
+    -  chown root:root /boot/grub2/grub.cfg
+    -  chmod og-rwx /boot/grub2/grub.cfg
+    -  chown root:root /boot/grub2/user.cfg
+    -  chmod og-rwx /boot/grub2/user.cfg
+  
+- name: "2.2.1.2 Ensure chrony is configured - NTP server"
+  shell: "{{ item }}"
+  with_items:
+    - grep -qxF 'pool '{{ ntp_server_ip }}' iburst' /etc/chrony.conf || echo 'pool '{{ ntp_server_ip }}' iburst' >> /etc/chrony.conf
+    - grep -qxF 'server '{{ ntp_server_ip }}'' /etc/chrony.conf || echo 'server '{{ ntp_server_ip }}'' >> /etc/chrony.conf

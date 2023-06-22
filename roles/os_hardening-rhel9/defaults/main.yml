@@ -62,3 +62,7 @@ cis_pwreuse_number: "10" # Ensure password reuse is limited to this number
 
 # 5.3.4
 cis_passwd_hash: "sha512" # Options are sha512 or md5
+
+#2.2.1.2##NTP server IP###
+
+ntp_server_ip: 10.101.99.60

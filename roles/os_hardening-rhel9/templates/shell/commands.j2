@@ -47,14 +47,27 @@ ln -s /etc/issue.net /etc/issue
 #Setting system policy to FUTURE SEC - 2.8.16#####
 update-crypto-policies --set FUTURE
 
-#Additional commands########
+#################################Additional commands##############################
 #Run the following commands to set permissions on your grub configuration:
 
-chown root:root /boot/grub2/grub.cfg
-chmod og-rwx /boot/grub2/grub.cfg
-chown root:root /boot/grub2/user.cfg
-chmod og-rwx /boot/grub2/user.cfg
-yum remove xorg-x11* -y
+cat > /etc/dconf/profile/gdm << EOF
+user-db:user
+system-db:gdm
+file-db:/usr/share/gdm/greeter-dconf-defaults
+EOF
+
+mkdir /etc/dconf/db/gdm.d
+
+cat > /etc/dconf/db/gdm.d/01-banner-message << EOF
+[org/gnome/login-screen]
+banner-message-enable=true
+banner-message-text='Authorized uses only. All activity may be monitored and reported.'
+EOF
+
+dconf update
+
+
+#yum remove xorg-x11* -y  ## this package has dependencies on satellite
 yum remove telnet* -y
 #####################Dont use this lines as this will bring systemdown###################
 #echo "Disabling Legacy Filesystems"
@@ -81,7 +94,7 @@ stat -Lc "%n %#a %u/%U %g/%G" /boot/grub2/grubenv /boot/grub2/grubenv 0600 0/roo
 
 
 ####################Network Security Configuration - SEC 3.0######################
-cat > /etc/sysctl.d/sysctl.conf << EOF
+cat > /etc/sysctl.conf << EOF
 net.ipv4.ip_forward=0
 net.ipv4.conf.all.send_redirects=0
 net.ipv4.conf.default.send_redirects=0
@@ -105,11 +118,15 @@ net.ipv6.conf.all.accept_redirects=0
 net.ipv6.conf.default.accept_redirects=0
 net.ipv6.conf.all.disable_ipv6=1
 fs.suid_dumpable=0
+kernel.randomize_va_space=2
 EOF
-
+sysctl -w kernel.randomize_va_space=2
+sysctl -p /etc/sysctl.conf 
 sysctl -w net.ipv4.conf.all.send_redirects=0
 sysctl -w net.ipv4.conf.default.send_redirects=0
 sysctl -w net.ipv4.route.flush=1
+sysctl -w fs.suid_dumpable=0
+sysctl -p /etc/sysctl.conf 
 ######################SSH Server Configuration#################################
 
 echo "Configuring SSH related all hardening values - SEC - 5.2"
