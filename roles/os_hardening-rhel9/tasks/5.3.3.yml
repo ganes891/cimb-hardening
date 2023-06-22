@@ -1,15 +1,5 @@
 # 5.3.3 Ensure password reuse is limited
 
-- name: 5.3.3 - Ensure password reuse is limited
-  debug:
-    msg: "WARNING - This check has not reuqired anymore"
-  tags:
-    - level-1
-    - section-5
-    - "5.3.3"
-    - scored
-    - todo
-
 - name: password history configs and commands to enable pwhistory
   shell: "{{ item }}"
   with_items:
