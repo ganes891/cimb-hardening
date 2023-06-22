@@ -5,7 +5,7 @@
     -  chmod og-rwx /boot/grub2/grub.cfg
     -  chown root:root /boot/grub2/user.cfg
     -  chmod og-rwx /boot/grub2/user.cfg
-    -  usermod -s /sbin/nologin
+    #-  usermod -s /sbin/nologin
     
 - name: "2.2.1.2 Ensure chrony is configured - NTP server"
   shell: "{{ item }}"

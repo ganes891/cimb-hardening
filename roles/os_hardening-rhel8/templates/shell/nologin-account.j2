@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for user in 'awk -F: '($3 < 1000) {print $1 }' /etc/passwd' ; do
+for user in `awk -F: '($3 < 1000) {print $1 }' /etc/passwd` ; do
  if [ $user != 'root' ]; then
  usermod -L $user
  if [ $user != 'sync' ] && [ $user != 'shutdown' ] & then
