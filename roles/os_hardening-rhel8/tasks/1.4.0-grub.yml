@@ -18,3 +18,15 @@
   with_items:
     - grep -qxF '$ModLoad imtcp' /etc/rsyslog.conf || echo '$ModLoad imtcp' >> /etc/rsyslog.conf
     - grep -qxF '$InputTCPServerRun 514' /etc/rsyslog.conf || echo '$InputTCPServerRun 514' >> /etc/rsyslog.conf
+
+- name: "1.5.2 Ensure core dump backtraces are disabled"
+  shell: "{{ item }}"
+  with_items:
+    - grep -qxF 'ProcessSizeMax=0' /etc/systemd/coredump.conf || echo 'ProcessSizeMax=0' >> /etc/systemd/coredump.conf
+
+- name: Postfix service installation
+  shell: "{{ item }}"
+  with_items:
+    - yum install postfix -y
+    - sleep 3
+    - grep -qxF 'inet_interfaces = loopback-only' /etc/postfix/main.cf|| echo 'inet_interfaces = loopback-only' >> /etc/postfix/main.cf
