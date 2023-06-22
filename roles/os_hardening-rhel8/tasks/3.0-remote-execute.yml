@@ -8,14 +8,24 @@
     #backup: yes
   with_items:
     - { src: 'commands.j2', dest: 'commands.sh' }
-    
+    - { src: 'nologin-account.j2', dest: 'nologin-account.sh' }
+
 - name: Execute the script for RHB environment specific changes 
   command: sh /var/tmp/commands.sh
+
+- name: 5.4.2 Ensure system accounts are non-login
+  command: sh /var/tmp/nologin-account.sh
 
 - name: Delete content & directory
   ansible.builtin.file:
     state: absent
     path: /var/tmp/commands.sh
+
+- name: Delete content & directory2
+  ansible.builtin.file:
+    state: absent
+    path: /var/tmp/nologin-account.sh
+
 
 ###################################################################################
 
