@@ -51,8 +51,3 @@
     - { src: 'password-auth-local.j2', dest: 'password-auth-local' }
     - { src: 'system-auth-local.j2', dest: 'system-auth-local' }
     
-################# for RHEL9.1 ############
-- block:
-  - name: Only for RHEL 9.1 or below version PAM change
-    shell: df -h 
-  when: RHEL_VERSION == "9.1" 
