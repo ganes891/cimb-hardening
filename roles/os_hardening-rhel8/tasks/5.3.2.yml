@@ -36,17 +36,17 @@
     -  grep -qxF 'silent' /etc/security/faillock.conf || echo 'silent' >> /etc/security/faillock.conf
     -  grep -qxF 'dir=/var/log/faillock' /etc/security/faillock.conf || echo 'dir=/var/log/faillock' >> /etc/security/faillock.conf
 
-- name: 5.3.2 and 5.3.3 - Ensure lockout for failed login attempts and password history - for password-auth and system-auth
-  template:
-    src: 'templates/{{ item.src }}'
-    dest: '/etc/pam.d/{{ item.dest }}'
-    owner: root
-    group: root
-    mode: 0644
-    #backup: yes
-  with_items:
-    - { src: 'password-auth-local.j2', dest: 'password-auth-local' }
-    - { src: 'system-auth-local.j2', dest: 'system-auth-local' }
+#- name: 5.3.2 and 5.3.3 - Ensure lockout for failed login attempts and password history - for password-auth and system-auth
+#  template:
+#    src: 'templates/{{ item.src }}'
+#    dest: '/etc/pam.d/{{ item.dest }}'
+#    owner: root
+#    group: root
+#    mode: 0644
+#    #backup: yes
+#  with_items:
+#    - { src: 'password-auth-local.j2', dest: 'password-auth-local' }
+#    - { src: 'system-auth-local.j2', dest: 'system-auth-local' }
   
 ###################### for RHEL8.7 or below ##########################
 #- block:
