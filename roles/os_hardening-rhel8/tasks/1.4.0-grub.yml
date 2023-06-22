@@ -5,9 +5,16 @@
     -  chmod og-rwx /boot/grub2/grub.cfg
     -  chown root:root /boot/grub2/user.cfg
     -  chmod og-rwx /boot/grub2/user.cfg
-  
+    -  usermod -s /sbin/nologin
+    
 - name: "2.2.1.2 Ensure chrony is configured - NTP server"
   shell: "{{ item }}"
   with_items:
     - grep -qxF 'pool '{{ ntp_server_ip }}' iburst' /etc/chrony.conf || echo 'pool '{{ ntp_server_ip }}' iburst' >> /etc/chrony.conf
     - grep -qxF 'server '{{ ntp_server_ip }}'' /etc/chrony.conf || echo 'server '{{ ntp_server_ip }}'' >> /etc/chrony.conf
+
+- name: "4.2.1.5 Ensure remote rsyslog messages are only accepted on designated log host"
+  shell: "{{ item }}"
+  with_items:
+    - grep -qxF '$ModLoad imtcp' /etc/rsyslog.conf || echo '$ModLoad imtcp' >> /etc/rsyslog.conf
+    - grep -qxF '$InputTCPServerRun 514' /etc/rsyslog.conf || echo '$InputTCPServerRun 514' >> /etc/rsyslog.conf
