@@ -33,11 +33,7 @@ pydoc       pydoc3      pydoc3.11   pydoc3.9    pyinotify   python      python3 
 Command to execute the script 
 ------------------------------
 
- For RHEL8.8 or above
+ For RHEL8
  # ansible-playbook -i inventory hardening.yml -e "BUILD_METHOD=hardening-rhel8"
- for RHEL8.7 or below
- # ansible-playbook -i inventory hardening.yml -e "BUILD_METHOD=hardening-rhel8" -e "RHEL_VERSION=8.7" 
- for RHEL9.2 or above
+ for RHEL9
  # ansible-playbook -i inventory hardening.yml -e "BUILD_METHOD=hardening-rhel9"
- for RHEL9.1 
- # ansible-playbook -i inventory hardening.yml -e "BUILD_METHOD=hardening-rhel9" -e "RHEL_VERSION=9.1"
