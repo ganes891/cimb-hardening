@@ -32,6 +32,9 @@
 - import_tasks: 1.4.0-grub.yml
   when: all_tasks_execute | bool
 
+- import_tasks: 1.4.1-extra.yml
+  when: all_tasks_execute | bool
+
 #- import_tasks: 5.3.4.yml
 #  when: all_tasks_execute | bool
 
