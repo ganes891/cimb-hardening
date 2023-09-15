@@ -11,7 +11,7 @@
 
 - name: 5.3.4 - Ensure password hashing algorithm is SHA-512
   command: "authconfig --update --passalgo=sha512"
-  when: sha512_check.stdout is undefined
+  #when: sha512_check.stdout is undefined
   changed_when: false
 
 

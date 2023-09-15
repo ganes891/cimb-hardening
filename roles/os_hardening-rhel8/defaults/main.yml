@@ -46,7 +46,7 @@ cis_sshd_deny_groups: "" # A comma-delimited list of groups to deny ssh access f
 cis_sshd_banner: "/etc/issue.net"
 
 # 5.3.1
-cis_pwquality_minlen: "8" # Minimum number of characters required for passwords
+cis_pwquality_minlen: "14" # Minimum number of characters required for passwords
 cis_pwquality_dcredit: "-1" # At least one digit must be provided
 cis_pwquality_ucredit: "-1" # At least one uppercase character must be provided
 cis_pwquality_ocredit: "-1" # At least one special character must be provided
