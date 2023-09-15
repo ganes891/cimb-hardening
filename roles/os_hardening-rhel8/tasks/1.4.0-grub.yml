@@ -29,4 +29,4 @@
   with_items:
     - yum install postfix -y
     - sleep 3
-    - grep -qxF 'inet_interfaces = loopback-only' /etc/postfix/main.cf|| echo 'inet_interfaces = loopback-only' >> /etc/postfix/main.cf
+    - grep -qxF 'inet_interfaces = localhost' /etc/postfix/main.cf|| echo 'inet_interfaces = loopback-only' >> /etc/postfix/main.cf
