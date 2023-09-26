@@ -45,14 +45,6 @@
     - { regexp: '^PASS_WARN_AGE', line: 'PASS_WARN_AGE   14' }
     - { regexp: '^PASS_MIN_DAYS', line: 'PASS_MIN_DAYS   7' }
 
-- name: Set password history retention SEC-5.4.1
-  lineinfile:
-    path: /etc/security/pwquality.conf
-    regexp: "{{ item.regexp }}"
-    line: "{{ item.line }}"
-  loop:
-    - { regexp: '^# remember', line: 'remember=5' }
-
 - name: Set default umask for users SEC-5.4.2
   lineinfile:
     path: /etc/profile
@@ -68,6 +60,9 @@
     line: "{{ item.line }}"
   loop:
     - { regexp: '^umask', line: 'umask 027' }
+
+- name: Set default umask for all sh files SEC-5.4.2
+  shell: for file in /etc/profile.d/*.sh ;do echo "umask 027" >> "$file"; done
 
 - name: Remove world-writable permissions on user home directories - sec-6.1.9
   file:

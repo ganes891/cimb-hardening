@@ -108,12 +108,16 @@ net.ipv6.conf.all.disable_ipv6=1
 fs.suid_dumpable=0
 EOF
 
+sysctl -w kernel.randomize_va_space=2
 sysctl -p /etc/sysctl.conf 
 sysctl -w net.ipv4.conf.all.send_redirects=0
 sysctl -w net.ipv4.conf.default.send_redirects=0
 sysctl -w net.ipv4.route.flush=1
 sysctl -w fs.suid_dumpable=0
 sysctl -p /etc/sysctl.conf
+
+
+
 ######################SSH Server Configuration#################################
 
 echo "Configuring SSH related all hardening values - SEC - 5.2"
