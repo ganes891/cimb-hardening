@@ -15,4 +15,4 @@
     - { regexp: "^#?ucredit = ", line: "ucredit = {{ cis_pwquality_ucredit }}" }
     - { regexp: "^#?ocredit = ", line: "ocredit = {{ cis_pwquality_ocredit }}" }
     - { regexp: "^#?lcredit = ", line: "lcredit = {{ cis_pwquality_lcredit }}" }
-tags: pwquality1
+  tags: pwquality1
