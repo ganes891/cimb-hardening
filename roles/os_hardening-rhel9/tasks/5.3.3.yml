@@ -5,4 +5,5 @@
   with_items:
     -  authselect enable-feature with-pwhistory
     -  grep -qxF 'remember = 5' /etc/security/pwhistory.conf || echo 'remember = 5' >> /etc/security/pwhistory.conf
+  tags: pwquality1
    
