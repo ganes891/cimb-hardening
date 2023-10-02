@@ -28,8 +28,15 @@ libyaml = True
 [root@ocp-devops-node-01 ~]# py
 pydoc       pydoc3      pydoc3.11   pydoc3.9    pyinotify   python      python3     python3.11  python3.9
 
-####################commands to run in each versions###########################
+####################important notes ###########################
+for Physical you need to cross check and run the below script instead of "grub2-mkconfig -o /boot/grub2/grub.cfg"
+Alternatively, on UEFI systems, run the following:
 
+Raw
+# grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg
+
+
+###############################################################################
 Command to execute the script 
 ------------------------------
 
