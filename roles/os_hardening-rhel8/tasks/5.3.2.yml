@@ -34,7 +34,7 @@
     -  authselect check
     #-  authselect enable-feature with-faillock
     -  authselect select sssd with-faillock
-    -  grep -qxF 'deny = 4' /etc/security/faillock.conf || echo 'deny = 3' >> /etc/security/faillock.conf
+    -  grep -qxF 'deny = 3' /etc/security/faillock.conf || echo 'deny = 3' >> /etc/security/faillock.conf
     -  grep -qxF 'unlock_time = 900' /etc/security/faillock.conf || echo 'unlock_time = 900' >> /etc/security/faillock.conf
     -  grep -qxF 'silent' /etc/security/faillock.conf || echo 'silent' >> /etc/security/faillock.conf
     -  grep -qxF 'dir = /var/log/faillock' /etc/security/faillock.conf || echo 'dir = /var/log/faillock' >> /etc/security/faillock.conf
