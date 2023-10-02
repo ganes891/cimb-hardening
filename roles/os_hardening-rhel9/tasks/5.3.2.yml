@@ -22,11 +22,14 @@
 - name: faillock configs and commands to enable faillock
   shell: "{{ item }}"
   with_items:
+    -  mkdir /var/log/faillock
+    -  semanage fcontext -a -t faillog_t "/var/log/faillock(/.*)?"
+    -  restorecon -R -v /var/log/faillock
     -  authselect current
     -  authselect check
-    -  authselect enable-feature with-faillock
+    #-  authselect enable-feature with-faillock
     -  authselect select sssd with-faillock
-    -  grep -qxF 'deny = 4' /etc/security/faillock.conf || echo 'deny = 4' >> /etc/security/faillock.conf
+    -  grep -qxF 'deny = 3' /etc/security/faillock.conf || echo 'deny = 3' >> /etc/security/faillock.conf
     -  grep -qxF 'unlock_time = 900' /etc/security/faillock.conf || echo 'unlock_time = 900' >> /etc/security/faillock.conf
     -  grep -qxF 'silent' /etc/security/faillock.conf || echo 'silent' >> /etc/security/faillock.conf
     -  grep -qxF 'dir = /var/log/faillock' /etc/security/faillock.conf || echo 'dir = /var/log/faillock' >> /etc/security/faillock.conf
