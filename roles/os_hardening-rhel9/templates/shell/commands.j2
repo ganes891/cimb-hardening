@@ -130,6 +130,9 @@ sysctl -p /etc/sysctl.conf
 grep -qxF 'ipv6.disable=1' /etc/default/grub || echo 'ipv6.disable=1' >> /etc/default/grub
 grep -qxF 'GRUB_CMDLINE_LINUX="rd.lvm.lv=rhel/swap crashkernel=auto rd.lvm.lv=rhel/root ipv6.disable=1"' /etc/default/grub || echo 'GRUB_CMDLINE_LINUX="rd.lvm.lv=rhel/swap crashkernel=auto rd.lvm.lv=rhel/root ipv6.disable=1"' >> /etc/default/grub
 grub2-mkconfig -o /boot/grub2/grub.cfg
+
+#grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg   ##for physical servers use this
+
 ######################SSH Server Configuration#################################
 
 echo "Configuring SSH related all hardening values - SEC - 5.2"

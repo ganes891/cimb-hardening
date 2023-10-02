@@ -30,6 +30,8 @@ pydoc       pydoc3      pydoc3.11   pydoc3.9    pyinotify   python      python3 
 
 ####################important notes ###########################
 for Physical you need to cross check and run the below script instead of "grub2-mkconfig -o /boot/grub2/grub.cfg"
+
+Script path:  rhb-hardening\roles\os_hardening-rhel8\templates\shell\commands.j2
 Alternatively, on UEFI systems, run the following:
 
 Raw
