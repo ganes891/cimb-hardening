@@ -51,7 +51,7 @@ cis_pwquality_dcredit: "-1" # At least one digit must be provided
 cis_pwquality_ucredit: "-1" # At least one uppercase character must be provided
 cis_pwquality_ocredit: "-1" # At least one special character must be provided
 cis_pwquality_lcredit: "-1" # At least one lowercase character must be provided
-cis_pwquality_remember: "5" # At least one lowercase character must be provided
+cis_pwquality_remember: "10" # At least one lowercase character must be provided
 
 
 # 5.3.2
