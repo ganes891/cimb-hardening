@@ -57,7 +57,7 @@
 - name: copy the pam.d both system and password-auth files
   template:
     src: 'templates/shell/{{ item.src }}'
-    dest: '/etc/pam.d/{{ item.dest }}'
+    dest: '/etc/authselect/{{ item.dest }}'
     owner: root
     group: root
     #mode: 755
