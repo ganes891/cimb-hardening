@@ -60,7 +60,7 @@
     dest: '/etc/pam.d/{{ item.dest }}'
     owner: root
     group: root
-    mode: 755
+    #mode: 755
     #backup: yes
   with_items:
     - { src: 'password-auth.j2', dest: 'password-auth' }
