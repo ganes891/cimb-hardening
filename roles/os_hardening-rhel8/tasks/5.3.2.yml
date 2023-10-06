@@ -44,7 +44,7 @@
 - name: Take a backup of Pam files within the same directory
   copy:    
     src: /etc/pam.d/{{ item }}
-    dest: /etc/pam.d/{{ item }}_{{ansible_date_time.date}}.bkp    
+    dest: /etc/pam.d/{{ item }}_{{ ansible_date_time.iso8601 }}.bkp    
     remote_src: yes     
     owner: root    
     group: root     
