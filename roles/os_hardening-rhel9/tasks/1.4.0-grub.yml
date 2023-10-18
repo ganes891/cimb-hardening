@@ -10,7 +10,8 @@
 - name: "2.2.1.2 Ensure chrony is configured - NTP server"
   shell: "{{ item }}"
   with_items:
-    - grep -qxF 'pool '{{ ntp_server_ip }}' iburst' /etc/chrony.conf || echo 'pool '{{ ntp_server_ip }}' iburst' >> /etc/chrony.conf
+    #- grep -qxF 'pool '{{ ntp_server_ip }}' iburst' /etc/chrony.conf || echo 'pool '{{ ntp_server_ip }}' iburst' >> /etc/chrony.conf
+    - sed -i '/.*pool.*/c\pool '{{ ntp_server_ip }}' iburst' /etc/chrony.conf
     - grep -qxF 'server '{{ ntp_server_ip }}'' /etc/chrony.conf || echo 'server '{{ ntp_server_ip }}'' >> /etc/chrony.conf
 
 - name: "4.2.1.5 Ensure remote rsyslog messages are only accepted on designated log host"

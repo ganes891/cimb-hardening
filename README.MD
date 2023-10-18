@@ -38,6 +38,15 @@ Raw
 # grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg
 
 
+###### info ###############
+grep -qxF 'pool '{{ ntp_server_ip }}' iburst' /etc/chrony.conf || echo 'pool '{{ ntp_server_ip }}' iburst' >> /etc/chrony.conf
+
+sed -i '/.*pool.*/c\pool '{{ ntp_server_ip }}' iburst' /etc/chrony.conf
+
+sed -i '/.*pool.*/c\pool 10.101.99.60 iburst' /etc/chrony.conf 
+
+sed -i '/.*GRUB_CMDLINE_LINUX.*/c\GRUB_CMDLINE_LINUX="crashkernel=auto resume=/dev/mapper/rhel-swap rd.lvm.lv=rhel/root rd.lvm.lv=rhel/swap rhgb quiet ipv6.disable=1"' /etc/default/grub
+
 ###############################################################################
 Command to execute the script 
 ------------------------------
