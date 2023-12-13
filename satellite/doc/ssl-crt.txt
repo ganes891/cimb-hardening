@@ -1,0 +1,115 @@
+SSL certification for satellite server
+
+mkdir /root/satellite_cert/
+
+check the current self signed cert :
+#openssl x509 -in /etc/pki/katello/certs/katello-apache.crt -text | egrep '(Issuer:|Subject:|CA:|DNS:|Digital|Not Before|Not After)'
+
+#openssl genrsa -out /root/satellite_cert/satellite_cert_key.pem
+
+#openssl.conf  --> Get this file from AD team.
+
+#openssl req -new -key /root/satellite_cert/satellite_cert_key.pem -config /root/satellite_cert/openssl.conf -out /root/satellite_cert/satellite_cert_csr.pem
+
+now need to share satellite_cert_key.pem and satellite_cert_csr.pem to AD team to get "satellite_cert.pem" and "ca_cert_bundle.pem"
+
+# openssl  x509 -in satellite_cert.pem -text -noout -- > to verify
+
+====================
+
+1.
+#katello-certs-check -c /root/satellite_cert/satellite_cert.pem -k /root/satellite_cert/satellite_cert_key.pem -b /root/satellite_cert/ca_cert_bundle.pem  
+ 
+2. 
+
+To update the certificates on a currently running Red Hat Satellite installation, run:
+
+  satellite-installer --scenario satellite \
+    --certs-server-cert "/root/satellite_cert/satellite_cert.pem" \
+    --certs-server-key "/root/satellite_cert/satellite_cert_key.pem" \
+    --certs-server-ca-cert "/root/satellite_cert/ca_cert_bundle.pem" \
+    --certs-update-server --certs-update-server-ca
+
+
+3. On a computer with network access to Satellite Server, navigate to the following URL: https://satellite.example.com.
+
+4. In your browser, view the certificate details to verify the deployed certificate.
+
+5. katello-ca-consumer install dnf install http://satellite.example.com/pub/katello-ca-consumer-latest.noarch.rpm
+
+6. now cross check again --> openssl x509 -in /etc/pki/katello/certs/katello-apache.crt -text | egrep '(Issuer:|Subject:|CA:|DNS:|Digital|Not Before|Not After)'
+
+7. openssl x509 -in /etc/foreman-proxy/ssl_cert.pem -text | egrep '(Issuer:|Subject:|CA:|DNS:|Digital|Not Before|Not After)'
+=============
+Client refresh for ssl
+
+
+
+#subscription-manager identity
+
+# yum remove katello-ca-consumer*
+
+# yum localinstall http://katello.example.com/pub/katello-ca-consumer-latest.noarch.rpm
+
+# yum clean all
+
+#subscription-manager refresh
+
+#subscription-manager identity
+
+# yum repolist
+
+
++++++++++++++++==================================++++++++++++++++++++++++++===================
+
+capsule ssl 
+
+(on satellite server)
+
+#hammer capsule list
+
+
+SSL certification for capsule server
+
+mkdir /root/capsule_cert/
+
+check the current self signed cert :
+#openssl x509 -in /etc/pki/katello/certs/katello-apache.crt -text | egrep '(Issuer:|Subject:|CA:|DNS:|Digital|Not Before|Not After)'
+
+#openssl genrsa -out /root/capsule_cert/capsule_cert_key.pem
+
+#openssl.conf  --> Get this file from AD team.
+
+#openssl req -new -key /root/capsule_cert/capsule_cert_key.pem -config /root/capsule_cert/openssl.conf -out /root/capsule_cert/capsule_cert_csr.pem
+
+now need to share capsule_cert_key.pem and capsule_cert_csr.pem to AD team to get "capsule_cert.pem" and "ca_cert_bundle.pem"
+
+# openssl  x509 -in capsule_cert.pem -text -noout -- > to verify
+
+
+============
+1.
+#katello-certs-check -c /root/capsule_cert/capsule_cert.pem -k /root/capsule_cert/capsule_cert_key.pem -b /root/capsule_cert/ca_cert_bundle.pem  
+ 
+2. 
+
+To update the certificates on a currently running Red Hat capsule installation, run:
+
+  capsule-installer --scenario capsule \
+    --certs-server-cert "/root/capsule_cert/capsule_cert.pem" \
+    --certs-server-key "/root/capsule_cert/capsule_cert_key.pem" \
+    --certs-server-ca-cert "/root/capsule_cert/ca_cert_bundle.pem" \
+    --certs-update-server --certs-update-server-ca
+
+
+5. katello-ca-consumer install dnf install http://satellite.example.com/pub/katello-ca-consumer-latest.noarch.rpm
+
+6. scp the tar to capsule 
+
+==========> login to capsule and perform below.
+
+
+
+6. now cross check again --> openssl x509 -in /etc/pki/katello/certs/katello-apache.crt -text | egrep '(Issuer:|Subject:|CA:|DNS:|Digital|Not Before|Not After)'
+
+
