@@ -10,7 +10,7 @@
     - { src: 'commands.j2', dest: 'commands.sh' }
     - { src: 'nologin-account.j2', dest: 'nologin-account.sh' }
 
-- name: Execute the script for RHB environment specific changes 
+- name: Execute the script for sgh environment specific changes 
   command: sh /var/tmp/commands.sh
 
 - name: 5.4.2 Ensure system accounts are non-login

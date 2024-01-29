@@ -15,7 +15,7 @@ cat > /etc/issue.net << 'EOF'
 /------------------------------------------------------------------------\
 |                       *** NOTICE TO USERS ***                          |
 |                                                                        |
-| This computer system is the private property of RHB Bank      |
+| This computer system is the private property of sgh singhealth      |
 | It is for authorized use only.                                         |
 |                                                                        |
 | Users (authorized or unauthorized) have no explicit or implicit        |
@@ -39,7 +39,7 @@ cat > /etc/issue.net << 'EOF'
 EOF
 cp -p /etc/motd /etc/motd_$TIME.bak
 cat > /etc/motd << 'EOF'
-RHB Bank AUTHORIZED USE ONLY
+sgh singhealth AUTHORIZED USE ONLY
 EOF
 rm -rf /etc/issue
 ln -s /etc/issue.net /etc/issue
