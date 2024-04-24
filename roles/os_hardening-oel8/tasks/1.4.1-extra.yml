@@ -50,5 +50,8 @@
   loop:
     - { regexp: '^umask', line: 'umask 027' }
 
-- name: Set default umask for all sh files SEC-5.4.2
+- name: 5.6.1.9 Set default umask for all sh files
   shell: for file in /etc/profile.d/*.sh ;do echo "umask 027" >> "$file"; done
+
+- name: 4.1.1.4 Ensure audit_backlog_limit is sufficient
+  shell: grubby --update-kernel ALL --args 'audit_backlog_limit=64'
