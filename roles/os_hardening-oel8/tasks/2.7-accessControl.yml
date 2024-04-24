@@ -1,0 +1,7 @@
+
+#CIMB required tasks ###
+##################GDM SEC ##################################
+- name: 1.8.3 Ensure XDMCP is not enabled
+  template:
+    src: 'etc/gdm/custom.conf.j2'
+    dest: '/etc/gdm/custom.conf'

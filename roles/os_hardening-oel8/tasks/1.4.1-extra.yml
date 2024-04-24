@@ -1,0 +1,54 @@
+#CIMB required tasks ### ##24apr2024
+
+- name: 1.4.2 Ensure authentication is required when booting into rescue mode bkp
+  copy:    
+    src: /etc/systemd/system/rescue.service.d/{{ item }}
+    dest: /etc/systemd/system/rescue.service.d/{{ item }}_{{ ansible_date_time.iso8601 }}.bkp    
+    remote_src: yes     
+    owner: root    
+    group: root     
+    mode: '0755'    
+    force: yes    
+  with_items:
+    - 00-require-auth.conf
+    
+- name: 1.4.2 Ensure authentication is required when booting into rescue mode
+  template:
+    src: 'templates/shell/{{ item.src }}'
+    dest: '/etc/systemd/system/rescue.service.d/{{ item.dest }}'
+    owner: root
+    group: root
+    #mode: 755
+    #backup: yes
+  with_items:
+    - { src: '00-require-auth.j2', dest: '00-require-auth.conf' }
+
+- name: 5.2.7 Restrict root and system accounts from direct logins
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  loop:
+    - { regexp: '^PermitRootLogin', line: 'PermitRootLogin yes' }
+    - { regexp: '^MaxSessions', line: 'MaxSessions 4' }
+  notify: Restart sshd
+
+
+- name: 5.6.1.9 Ensure default user umask is set - /etc/profile
+  lineinfile:
+    path: /etc/profile
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  loop:
+    - { regexp: '^umask', line: 'umask 027' }
+    
+- name: 5.6.1.9 Ensure default user umask is set - /etc/bashrc
+  lineinfile:
+    path: /etc/bashrc
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  loop:
+    - { regexp: '^umask', line: 'umask 027' }
+
+- name: Set default umask for all sh files SEC-5.4.2
+  shell: for file in /etc/profile.d/*.sh ;do echo "umask 027" >> "$file"; done

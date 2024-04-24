@@ -1,8 +1,0 @@
-#additional commands
-
-- name: Additional findings for RHEL9 specific
-  shell: "{{ item }}"
-  with_items:
-    - systemctl disable cups
-    - systemctl disable avahi-daemon
-

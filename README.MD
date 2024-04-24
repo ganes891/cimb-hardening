@@ -1,5 +1,5 @@
 ########################################################################################
-#################### Version 2.0 | Hardening script RHEL8 & RHEL9#######################
+#################### Version 2.0 | Hardening script OEL8.*#######################
 ########################################################################################
 Pre-requisites: 
 ---------------
@@ -31,7 +31,7 @@ pydoc       pydoc3      pydoc3.11   pydoc3.9    pyinotify   python      python3 
 ####################important notes ###########################
 1. for Physical you need to cross check and run the below script instead of "grub2-mkconfig -o /boot/grub2/grub.cfg"
 
-Script path:  sgh-hardening\roles\os_hardening-rhel8\templates\shell\commands.j2
+Script path:  cimb-hardening\roles\os_hardening-oel8\templates\shell\commands.j2
 Alternatively, on UEFI systems, run the following:
 
 Raw
@@ -44,15 +44,13 @@ grep -qxF 'pool '{{ ntp_server_ip }}' iburst' /etc/chrony.conf || echo 'pool '{{
 
 sed -i '/.*pool.*/c\pool '{{ ntp_server_ip }}' iburst' /etc/chrony.conf
 
-sed -i '/.*pool.*/c\pool 10.101.99.60 iburst' /etc/chrony.conf 
+sed -i '/.*pool.*/c\pool 10.10.*.* iburst' /etc/chrony.conf
 
 sed -i '/.*GRUB_CMDLINE_LINUX.*/c\GRUB_CMDLINE_LINUX="crashkernel=auto resume=/dev/mapper/rhel-swap rd.lvm.lv=rhel/root rd.lvm.lv=rhel/swap rhgb quiet ipv6.disable=1"' /etc/default/grub
 
 ###############################################################################
 Command to execute the script 
 ------------------------------
+ For OEL8
+ # ansible-playbook -i inventory hardening.yml -e "BUILD_METHOD=hardening-oel8"
 
- For RHEL8
- # ansible-playbook -i inventory hardening.yml -e "BUILD_METHOD=hardening-rhel8"
- for RHEL9
- # ansible-playbook -i inventory hardening.yml -e "BUILD_METHOD=hardening-rhel9"
