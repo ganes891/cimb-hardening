@@ -1,5 +1,7 @@
 #CIMB required tasks ### ##24apr2024
-
+- name: create folder
+  shell: mkdir /etc/systemd/system/rescue.service.d
+  
 - name: 1.4.2 Ensure authentication is required when booting into rescue mode bkp
   copy:    
     src: /etc/systemd/system/rescue.service.d/{{ item }}
