@@ -1,9 +1,9 @@
 ---
-#- import_tasks: 2.0-services.yml
- # when: all_tasks_execute | bool
+- import_tasks: 2.0-services.yml
+  when: all_tasks_execute | bool
 
-#- import_tasks: 2.2-softwareUpdates.yml
- # when: all_tasks_execute | bool
+- import_tasks: 2.2-softwareUpdates.yml
+  when: all_tasks_execute | bool
 
 - import_tasks: 2.7-accessControl.yml
   when: all_tasks_execute | bool
@@ -11,11 +11,11 @@
 - import_tasks: 5.0-access-auth.yml
   when: all_tasks_execute | bool
 
-#- import_tasks: 6.0-userGroupPerm.yml
-#  when: all_tasks_execute | bool
+- import_tasks: 6.0-userGroupPerm.yml
+  when: all_tasks_execute | bool
 
-#- import_tasks: 4.0-LoggingAuditing.yml
- # when: all_tasks_execute | bool
+- import_tasks: 4.0-LoggingAuditing.yml
+  when: all_tasks_execute | bool
 
 - import_tasks: 3.0-remote-execute.yml
   when: all_tasks_execute | bool
@@ -29,8 +29,8 @@
 - import_tasks: 5.3.3.yml
   when: all_tasks_execute | bool
   
-#- import_tasks: 1.4.0-grub.yml
-#  when: all_tasks_execute | bool
+- import_tasks: 1.4.0-grub.yml
+  when: all_tasks_execute | bool
 
 - import_tasks: 1.4.1-extra.yml
   when: all_tasks_execute | bool
