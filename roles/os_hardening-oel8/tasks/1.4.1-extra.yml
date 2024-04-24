@@ -29,7 +29,7 @@
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
   loop:
-    - { regexp: '^PermitRootLogin', line: 'PermitRootLogin yes' }
+    - { regexp: '^PermitRootLogin', line: 'PermitRootLogin no' }
     - { regexp: '^MaxSessions', line: 'MaxSessions 4' }
   notify: Restart sshd
 
