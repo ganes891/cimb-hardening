@@ -193,8 +193,8 @@ for i in \
   grep -q ${option} /etc/ssh/sshd_config && sed -i "s/.*${option}.*/$i/g" /etc/ssh/sshd_config || echo "$i" >> /etc/ssh/sshd_config
 done
 
-chown root:root /etc/ssh/sshd_config
-chmod 600 /etc/ssh/sshd_config
+#chown root:root /etc/ssh/sshd_config
+#chmod 600 /etc/ssh/sshd_config
 
 #############################SEC 2.5 ################################################
 echo "Setting core dump security limits..."
