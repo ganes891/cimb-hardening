@@ -1,6 +1,8 @@
 
 #CIMB required tasks ###
 ##################GDM SEC ##################################
+- name: mkdir for gsm folder
+  shell: mkdir /etc/gdm
 - name: 1.8.3 Ensure XDMCP is not enabled
   template:
     src: 'etc/gdm/custom.conf.j2'
