@@ -1,3 +1,4 @@
+#CIMB required tasks (5.6.1.9) ### ##24apr2024
 - name: Transfer the script to remote node
   template:
     src: 'templates/shell/{{ item.src }}'
