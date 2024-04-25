@@ -70,3 +70,20 @@
     #backup: yes
   with_items:
     - { src: '50-system_local.j2', dest: '50-system_local.rules' }
+    
+- name: 4.1.3.7 Ensure unsuccessful file access attempts are collected - b32 EACCES
+  template:
+    src: 'templates/shell/{{ item.src }}'
+    dest: '/var/tmp/{{ item.dest }}'
+    owner: root
+    group: root
+    mode: 755
+    #backup: yes
+  with_items:
+    - { src: '50-access_rules.j2', dest: '50-access_rules.sh' }
+
+- name: 4.1.3.7 run script
+  command: sh /var/tmp/50-access_rules.sh
+
+- name: 4.1.3.5 Ensure events that modify the system's network environment are collected - reload
+  shell: augenrules --load
