@@ -85,5 +85,5 @@
 - name: 4.1.3.7 run script
   command: sh /var/tmp/50-access_rules.sh
 
-- name: 4.1.3.5 Ensure events that modify the system's network environment are collected - reload
+- name: 4.1.3.5 Ensure events that modify the system's network-reload (ignoreable)
   shell: augenrules --load
